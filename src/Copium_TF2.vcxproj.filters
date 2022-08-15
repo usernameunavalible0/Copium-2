@@ -131,6 +131,7 @@
     <ClCompile Include="SDK\EntityCache\EntityCache.cpp" />
     <ClCompile Include="Features\Menu\InputHelper\InputHelper.cpp" />
     <ClCompile Include="Features\Menu\Menu.cpp" />
+    <ClCompile Include="Hooks\SurfaceHook\SurfaceHook.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entry\Entry.h" />
@@ -523,6 +524,7 @@
     <ClInclude Include="Features\Menu\InputHelper\InputHelper.h" />
     <ClInclude Include="Features\Menu\Menu.h" />
     <ClInclude Include="Util\XorStr\XorStr.h" />
+    <ClInclude Include="Hooks\SurfaceHook\SurfaceHook.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SDK\hl2_src\game\server\base.txt" />

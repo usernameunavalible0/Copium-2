@@ -182,6 +182,7 @@
     <ClCompile Include="Hooks\ModelRender\ModelRender.cpp" />
     <ClCompile Include="Hooks\NetChannel\NetChannel.cpp" />
     <ClCompile Include="Hooks\SequenceTransitioner\SequenceTransitioner.cpp" />
+    <ClCompile Include="Hooks\SurfaceHook\SurfaceHook.cpp" />
     <ClCompile Include="Hooks\TFPlayer\TFPlayer.cpp" />
     <ClCompile Include="Hooks\TFWeaponBase\TFWeaponBase.cpp" />
     <ClCompile Include="Hooks\VGuiPanel\VGuiPanel.cpp" />
@@ -313,6 +314,7 @@
     <ClInclude Include="Hooks\ModelRender\ModelRender.h" />
     <ClInclude Include="Hooks\NetChannel\NetChannel.h" />
     <ClInclude Include="Hooks\SequenceTransitioner\SequenceTransitioner.h" />
+    <ClInclude Include="Hooks\SurfaceHook\SurfaceHook.h" />
     <ClInclude Include="Hooks\TFPlayer\TFPlayer.h" />
     <ClInclude Include="Hooks\TFWeaponBase\TFWeaponBase.h" />
     <ClInclude Include="Hooks\VGuiPanel\VGuiPanel.h" />
