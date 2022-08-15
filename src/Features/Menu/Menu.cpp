@@ -672,7 +672,7 @@ void CMenu::Run()
 								CheckBox(Vars::ESP::Buildings::IgnoreTeam, L"Ignore Local Team?");
 								CheckBox(Vars::ESP::Buildings::HealthText, L"Text to show building health?");
 								CheckBox(Vars::ESP::Buildings::Name, L"Text to show building type?");
-								CheckBox(Vars::ESP::Buildings::IgnoreTeam, L"Text to show Misc info about the building?");
+								CheckBox(Vars::ESP::Buildings::Info, L"Text to show Misc info about the building?");
 							}
 							GroupBoxEnd(L"Buildings", 210);
 
@@ -704,6 +704,7 @@ void CMenu::Run()
 					GroupBoxStart();
 					{
 						CheckBox(Vars::Misc::Bunnyhop, L"Automatic Bunnyhop?");
+						CheckBox(Vars::Misc::AutoStrafe, L"Automatic Air Strafing");
 						CheckBox(Vars::Misc::BypassPure, L"Bypass sv_pure?");
 					}
 					GroupBoxEnd(L"Main", 210);

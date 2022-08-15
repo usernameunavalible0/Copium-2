@@ -84,6 +84,7 @@ namespace Vars
 	namespace Misc
 	{
 		inline CVar<bool> Bunnyhop{ true, L"Bunnyhop"};
+		inline CVar<bool> AutoStrafe{ true, L"Auto Strafe" };
 		inline CVar<bool> BypassPure{ true, L"Bypass Pure" };
 	}
 }

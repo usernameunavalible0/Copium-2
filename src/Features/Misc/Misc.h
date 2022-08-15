@@ -9,6 +9,7 @@ public:
 
 private:
 	void Bunnyhop(C_TFPlayer* pLocal, CUserCmd* cmd);
+	void AutoStrafe(CUserCmd* pCmd);
 	void AntiWarp(C_TFPlayer* pLocal, CUserCmd* cmd);
 };
 

@@ -223,8 +223,15 @@ public:
 	M_NETVAR(m_iCampaignMedals, int, "CTFPlayer", "m_iCampaignMedals");
 	M_NETVAR(m_iPlayerSkinOverride, int, "CTFPlayer", "m_iPlayerSkinOverride");
 	M_NETVAR(m_bViewingCYOAPDA, bool, "CTFPlayer", "m_bViewingCYOAPDA");
+	M_NETVAR(m_nWaterLevel, BYTE, "CTFPlayer", "m_nWaterLevel");
 	
 public:
+
+	inline bool IsSwimming()
+	{
+		return (m_nWaterLevel() > 1);
+	}
+
 	C_TFWeaponBase* GetActiveTFWeapon();
 
 	inline float m_flInvisibility()
