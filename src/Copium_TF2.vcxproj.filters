@@ -133,6 +133,10 @@
     <ClCompile Include="Hooks\SurfaceHook\SurfaceHook.cpp" />
     <ClCompile Include="Features\Visual\Visuals.cpp" />
     <ClCompile Include="Util\Hash\Hash.cpp" />
+    <ClCompile Include="Features\Aimbot\AimbotGlobal\AimbotGlobal.cpp" />
+    <ClCompile Include="Features\Aimbot\AimbotHitscan\AimbotHitscan.cpp" />
+    <ClCompile Include="Features\Aimbot\AimbotMelee\AimbotMelee.cpp" />
+    <ClCompile Include="Features\Aimbot\Aimbot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entry\Entry.h" />
@@ -528,6 +532,10 @@
     <ClInclude Include="Hooks\SurfaceHook\SurfaceHook.h" />
     <ClInclude Include="Features\Visual\Visuals.h" />
     <ClInclude Include="Util\Hash\Hash.h" />
+    <ClInclude Include="Features\Aimbot\AimbotGlobal\AimbotGlobal.h" />
+    <ClInclude Include="Features\Aimbot\AimbotHitscan\AimbotHitscan.h" />
+    <ClInclude Include="Features\Aimbot\AimbotMelee\AimbotMelee.h" />
+    <ClInclude Include="Features\Aimbot\Aimbot.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SDK\hl2_src\game\server\base.txt" />

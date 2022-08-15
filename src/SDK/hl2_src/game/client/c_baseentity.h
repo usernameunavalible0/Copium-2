@@ -25,6 +25,13 @@
 
 namespace I { inline int32* PredictionRandomSeed = nullptr; }
 
+#define M_VIRTUALGET(name, type, base, fn, index) __inline type Get##name() \
+{ \
+	void* pBase = base; \
+	return VFunc_Get<fn>(pBase, index)(pBase); \
+}
+
+
 class IInterpolatedVar;
 class CDmgAccumulator;
 class CEntityMapData;
@@ -351,6 +358,11 @@ public:
 	M_NETVAR(m_nModelIndexOverrides, void*, "CBaseEntity", "m_nModelIndexOverrides");
 
 public:
+
+	inline void* Renderable() { return reinterpret_cast<void*>((reinterpret_cast<uintptr_t>(this) + 0x4)); }
+
+	M_VIRTUALGET(RgflCoordinateFrame, matrix3x4_t&, Renderable(), matrix3x4_t& (__thiscall*)(void*), 34);
+
 	inline int GetMoveType()
 	{
 		return *reinterpret_cast<int*>(reinterpret_cast<DWORD>(this) + 0x1A4);

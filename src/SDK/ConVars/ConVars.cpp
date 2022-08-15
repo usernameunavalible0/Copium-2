@@ -14,6 +14,9 @@ bool CConVars::Initialize()
 	cl_updaterate = I::Cvar->FindVar("cl_updaterate");
 	CHECKVAR(cl_updaterate);
 
+	sv_gravity = I::Cvar->FindVar("sv_gravity");
+	CHECKVAR(sv_gravity);
+
 	//If we arrive here, return success.
 	return true;
 }

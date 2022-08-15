@@ -217,11 +217,14 @@ public:
 	M_NETVAR(m_flInspectAnimEndTime, float, "CTFWeaponBase", "m_flInspectAnimEndTime");
 	M_NETVAR(m_nInspectStage, int, "CTFWeaponBase", "m_nInspectStage");
 	M_NETVAR(m_iConsecutiveShots, int, "CTFWeaponBase", "m_iConsecutiveShots");
+	M_NETVAR(m_flChargedDamage, float, "CTFSniperRifle", "m_flChargedDamage");
+	M_NETVAR(m_flChargeBeginTime, float, "CTFPipebombLauncher", "m_flChargeBeginTime");
 
 public:
 	bool CanFireCiriticalShotHelper(const bool bHeadShot = false);
 
 public:
+
 	inline bool CanHeadShot()
 	{
 		return ((GetDamageType() & DMG_USE_HITLOCATIONS) && CanFireCiriticalShotHelper(true));

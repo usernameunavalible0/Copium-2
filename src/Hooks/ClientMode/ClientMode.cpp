@@ -4,7 +4,7 @@
 #include "../../Features/Misc/Misc.h"
 #include "../../Features/Prediction/Prediction.h"
 #include "../../Features/Visual/Visuals.h"
-
+#include "../../Features/Aimbot/Aimbot.h"
 #include "../CL_Main/CL_Main.h"
 
 using namespace Hooks;
@@ -27,18 +27,29 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 
 	if (pLocal && pLocal->IsAlive())
 	{
+		QAngle va;
+		if (Vars::Aimbot::Hitscan::AimMethod.m_Var == 2)
+			I::EngineClient->GetViewAngles(va);
+
 		C_TFWeaponBase* pWeapon = pLocal->GetActiveTFWeapon();
 
 		if (pWeapon)
 		{
+			g_Globals.m_nCurItemDefIndex = pWeapon->m_iItemDefinitionIndex();
+			g_Globals.m_bWeaponCanHeadShot = pWeapon->CanHeadShot();
+			g_Globals.m_bWeaponCanAttack = CanShoot(pLocal, pWeapon);
 			F::Prediction.Start(pLocal, cmd);
 			{
 				//Run aimbot, triggerbot etc. here
+				F::Aimbot.Run(cmd);
 			}
 			F::Prediction.Finish(pLocal);
 		}
 
 		F::Misc.Run(pLocal, cmd);
+
+		if (Vars::Aimbot::Hitscan::AimMethod.m_Var == 2)
+			I::EngineClient->SetViewAngles(va);
 	}
 
 	return false;

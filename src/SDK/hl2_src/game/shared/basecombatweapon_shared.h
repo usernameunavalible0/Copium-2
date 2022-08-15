@@ -276,6 +276,12 @@ public:
 	M_NETVAR(m_hOwner, CBaseCombatCharacterHandle, "CBaseCombatWeapon", "m_hOwner");
 
 public:
+
+	inline float GetSwingRange(C_BaseEntity* pLocal)
+	{
+		return static_cast<float>(VFunc_Get<int(__thiscall*)(C_BaseEntity*)>(this, 451)(pLocal));
+	}
+
 	inline bool CanPrimaryAttack()
 	{
 		return (I::GlobalVars->curtime >= m_flNextPrimaryAttack());

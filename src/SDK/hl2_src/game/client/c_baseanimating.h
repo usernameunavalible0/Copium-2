@@ -152,6 +152,18 @@ public:
 	M_NETVAR(m_flFadeScale, float, "CBaseAnimating", "m_flFadeScale");
 
 public:
+
+	inline int GetNumOfHitboxes() {
+		if (const auto& pModel = GetModel()) {
+			if (const auto& pHdr = I::ModelInfoClient->GetStudiomodel(pModel)) {
+				if (const auto& pSet = pHdr->pHitboxSet(m_nHitboxSet()))
+					return pSet->numhitboxes;
+			}
+		}
+
+		return 0;
+	}
+
 	inline std::array<float, MAXSTUDIOPOSEPARAM>& m_flPoseParameter()
 	{
 		static const int nOffset = GetNetVar("CBaseAnimating", "m_flPoseParameter");
@@ -171,6 +183,27 @@ public:
 	}
 
 public:
+
+	inline bool GetHitboxMinsAndMaxsAndMatrix(const int nHitbox, Vector& vMins, Vector& vMaxs, matrix3x4_t& matrix, Vector* vCenter) {
+		if (const auto& pModel = GetModel()) {
+			if (const auto& pHdr = I::ModelInfoClient->GetStudiomodel(pModel)) {
+				matrix3x4_t BoneMatrix[MAXSTUDIOBONES];
+				if (SetupBones(BoneMatrix, MAXSTUDIOBONES, 0x100, I::GlobalVars->curtime)) {
+					if (const auto& pSet = pHdr->pHitboxSet(m_nHitboxSet())) {
+						if (const auto& pBox = pSet->pHitbox(nHitbox)) {
+							vMins = pBox->bbmin; vMaxs = pBox->bbmax;
+							memcpy(matrix.Base(), BoneMatrix[pBox->bone].Base(), sizeof(matrix3x4_t));
+							if (vCenter) VectorTransform(((pBox->bbmin + pBox->bbmax) * 0.5f), BoneMatrix[pBox->bone], *vCenter);
+							return true;
+						}
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
 	inline bool GetHitboxPosition(const int nHitbox, Vector& vPosition)
 	{
 		const model_t* pModel = this->GetModel();

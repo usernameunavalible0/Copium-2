@@ -11,6 +11,7 @@ public:
 	ConVar* cl_interp = nullptr;
 	ConVar* cl_interp_ratio = nullptr;
 	ConVar* cl_updaterate = nullptr;
+	ConVar* sv_gravity = nullptr;
 };
 
 namespace G { inline CConVars ConVars; }

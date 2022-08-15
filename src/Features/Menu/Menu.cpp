@@ -607,6 +607,74 @@ void CMenu::Run()
 			{
 				case EMainTabs::TAB_AIM:
 				{
+					Rect_t checkpoint = m_LastWidget;
+
+					GroupBoxStart();
+					{
+						CheckBox(Vars::Aimbot::Global::Active, _(L"Aimbot master switch"));
+						InputKey(Vars::Aimbot::Global::AimKey);
+						CheckBox(Vars::Aimbot::Global::AutoShoot, _(L"Automatically shoot when target is found"));
+						CheckBox(Vars::Aimbot::Global::AimPlayers, _(L"Aim at players"));
+						CheckBox(Vars::Aimbot::Global::AimBuildings, _(L"Aim at buildings"));
+						CheckBox(Vars::Aimbot::Global::IgnoreInvlunerable, _(L"Ignore players who can't be damaged"));
+						CheckBox(Vars::Aimbot::Global::IgnoreCloaked, _(L"Ignore cloaked spies"));
+						CheckBox(Vars::Aimbot::Global::IgnoreFriends, _(L"Ignore Steam friends"));
+						CheckBox(Vars::Aimbot::Global::IgnoreTaunting, _(L"Ignore taunting players"));
+					}
+					GroupBoxEnd(_(L"Global"), 160);
+
+					checkpoint.x += 160 + Vars::Menu::SpacingX;
+					m_LastWidget = checkpoint;
+
+					GroupBoxStart();
+					{
+						CheckBox(Vars::Aimbot::Hitscan::Active, _(L"Hitscan master switch"));
+						ComboBox(Vars::Aimbot::Hitscan::SortMethod, { { 0, _(L"FOV") }, { 1, _(L"Distance") } });
+						ComboBox(Vars::Aimbot::Hitscan::AimMethod, { { 0, _(L"Normal") }, { 1, _(L"Smooth") }, { 2, _(L"Silent") } });
+						ComboBox(Vars::Aimbot::Hitscan::AimHitbox, { { 0, _(L"Head") }, { 1, _(L"Body") }, { 2, _(L"Auto") } });
+						InputFloat(Vars::Aimbot::Hitscan::AimFOV, 1.0f, 180.0f, 1.0f, L"%.0f");
+						InputFloat(Vars::Aimbot::Hitscan::SmoothingAmount, 1.0f, 10.0f, 1.0f, L"%.0f");
+						ComboBox(Vars::Aimbot::Hitscan::TapFire, { { 0, _(L"Off") } , { 1, _(L"Distance") }, { 2, _(L"Always") } });
+						CheckBox(Vars::Aimbot::Hitscan::AutoRev, _(L"Automatically rev minigun when aimbot active"));
+						CheckBox(Vars::Aimbot::Hitscan::ScanHitboxes, _(L"Scan body edges"));
+						CheckBox(Vars::Aimbot::Hitscan::ScanHead, _(L"Scan head edges"));
+						CheckBox(Vars::Aimbot::Hitscan::ScanBuildings, _(L"Scan building edges"));
+						CheckBox(Vars::Aimbot::Hitscan::WaitForHeadshot, _(L"Wait untill weapon can headshot"));
+						CheckBox(Vars::Aimbot::Hitscan::WaitForCharge, _(L"Wait untill sniper can one shot target"));
+						CheckBox(Vars::Aimbot::Hitscan::SpectatedSmooth, _(L"Toggle smooth aim when spectated"));
+						CheckBox(Vars::Aimbot::Hitscan::ScopedOnly, _(L"Sniper only aims when scoped"));
+						CheckBox(Vars::Aimbot::Hitscan::AutoScope, _(L"Sniper automatically scopes when target found"));
+						//CheckBox(Vars::Misc::CL_Move::Doubletap, _(L"Shift tickbase while aimbotting when it's possible. Check the misc tab for more."));
+					}
+					GroupBoxEnd(_(L"Hitscan"), 215);
+
+					checkpoint.x += 215 + Vars::Menu::SpacingX;
+					m_LastWidget = checkpoint;
+
+					GroupBoxStart();
+					{
+						CheckBox(Vars::Aimbot::Projectile::Active, _(L"Projectile master switch"));
+						CheckBox(Vars::Aimbot::Projectile::PerformanceMode, _(L"Only target enemy closest to crosshair"));
+						ComboBox(Vars::Aimbot::Projectile::SortMethod, { { 0, _(L"FOV") }, { 1, _(L"Distance") } });
+						ComboBox(Vars::Aimbot::Projectile::AimMethod, { { 0, _(L"Normal") }, { 1, _(L"Silent") } });
+						ComboBox(Vars::Aimbot::Projectile::AimPosition, { { 0, _(L"Body") }, { 1, _(L"Feet") }, { 2, _(L"Auto") } });
+						InputFloat(Vars::Aimbot::Projectile::AimFOV, 1.0f, 180.0f, 1.0f, L"%.0f");
+					}
+					GroupBoxEnd(_(L"Projectile"), 215);
+
+					GroupBoxStart();
+					{
+						CheckBox(Vars::Aimbot::Melee::Active, _(L"Melee master switch"));
+						ComboBox(Vars::Aimbot::Melee::SortMethod, { { 0, _(L"FOV") }, { 1, _(L"Distance") } });
+						ComboBox(Vars::Aimbot::Melee::AimMethod, { { 0, _(L"Normal") }, { 1, _(L"Smooth") }, { 2, _(L"Silent") } });
+						InputFloat(Vars::Aimbot::Melee::AimFOV, 1.0f, 180.0f, 1.0f, L"%.0f");
+						InputFloat(Vars::Aimbot::Melee::SmoothingAmount, 1.0f, 10.0f, 0.5f, L"%.0f");
+						CheckBox(Vars::Aimbot::Melee::RangeCheck, _(L"Only aim when target in range"));
+						CheckBox(Vars::Aimbot::Melee::PredictSwing, _(L"Predict melee attack"));
+						CheckBox(Vars::Aimbot::Melee::WhipTeam, _(L"Hit teammates when holding the Disciplinary action"));
+					}
+					GroupBoxEnd(_(L"Melee"), 215);
+
 					break;
 				}
 

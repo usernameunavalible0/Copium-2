@@ -227,6 +227,29 @@ public:
 	
 public:
 
+	inline bool IsInJarate()
+	{
+		return InCond(TF_COND_URINE);
+	}
+
+	inline bool IsCritBoostedNoMini() {
+
+		return (InCond(TF_COND_CRITBOOSTED) ||
+			InCond(TF_COND_CRITBOOSTED_USER_BUFF) ||
+			InCond(TF_COND_CRITBOOSTED_FIRST_BLOOD) ||
+			InCond(TF_COND_CRITBOOSTED_BONUS_TIME) ||
+			InCond(TF_COND_CRITBOOSTED_ON_KILL) ||
+			InCond(TF_COND_CRITBOOSTED_DEMO_CHARGE) ||
+			InCond(TF_COND_CRITBOOSTED_CTF_CAPTURE) ||
+			InCond(TF_COND_CRITBOOSTED_PUMPKIN) ||
+			InCond(TF_COND_CRITBOOSTED_RAGE_BUFF));
+	}
+
+	inline bool IsTaunting()
+	{
+		return InCond(TF_COND_TAUNTING);
+	}
+
 	inline bool IsSwimming()
 	{
 		return (m_nWaterLevel() > 1);

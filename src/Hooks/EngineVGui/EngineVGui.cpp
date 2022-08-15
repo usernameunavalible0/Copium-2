@@ -28,6 +28,21 @@ void __fastcall EngineVGui::Paint::Detour(void* ecx, void* edx, int mode)
 				{
 					F::ESP.Render(pLocal);
 				}
+
+				//Current Active Aimbot FOV
+				if (/*Vars::Visual::AimFOVAlpha.m_Var &&*/ g_Globals.m_flCurAimFOV)
+				{
+					if (const auto& pLocal = g_EntityCache.GetLocal())
+					{
+						float flFOV = static_cast<float>(Vars::Visual::FieldOfView.m_Var);
+						float flR = tanf(DEG2RAD(g_Globals.m_flCurAimFOV) / 2.0f)
+							/ tanf(DEG2RAD((pLocal->IsZoomed() && !Vars::Visual::RemoveZoom.m_Var) ? 30.0f : flFOV) / 2.0f) * g_Globals.m_nScreenWidht;
+						Color clr = COLOR_WHITE;
+						//clr.a = static_cast<byte>(Vars::Visuals::AimFOVAlpha.m_Var);
+						G::Draw.OutlinedCircle(g_Globals.m_nScreenWidht / 2, g_Globals.m_nScreenHeight / 2, flR, 68, clr);
+					}
+				}
+
 			}
 
 			if (!F::Menu.m_bOpen)
@@ -36,6 +51,7 @@ void __fastcall EngineVGui::Paint::Detour(void* ecx, void* edx, int mode)
 			}
 
 			F::Menu.Run();
+
 		}
 		pfFinishDrawing(I::MatSystemSurface);
 	}

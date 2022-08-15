@@ -42,6 +42,14 @@ void __fastcall BaseClient::FrameStageNotify::Detour(void* ecx, void* edx, Clien
 
 	if (curStage == ClientFrameStage_t::FRAME_RENDER_START)
 	{
+		m_vPunchAngles = QAngle();
+
+		if (Vars::Visual::RemoveVisualRecoil.m_Var) {
+			if (const auto& pLocal = g_EntityCache.GetLocal()) {
+				m_vPunchAngles = pLocal->m_vecPunchAngle();	//Store punch angles to be compesnsated for in aim
+			}
+		}
+
 		F::Visual.ThirdPerson();
 	}
 
