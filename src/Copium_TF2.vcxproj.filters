@@ -129,6 +129,8 @@
     <ClCompile Include="Hooks\BaseEntity\BaseEntity.cpp" />
     <ClCompile Include="Hooks\BasePlayer\BasePlayer.cpp" />
     <ClCompile Include="SDK\EntityCache\EntityCache.cpp" />
+    <ClCompile Include="Features\Menu\InputHelper\InputHelper.cpp" />
+    <ClCompile Include="Features\Menu\Menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entry\Entry.h" />
@@ -518,6 +520,9 @@
     <ClInclude Include="Hooks\BaseEntity\BaseEntity.h" />
     <ClInclude Include="Hooks\BasePlayer\BasePlayer.h" />
     <ClInclude Include="SDK\EntityCache\EntityCache.h" />
+    <ClInclude Include="Features\Menu\InputHelper\InputHelper.h" />
+    <ClInclude Include="Features\Menu\Menu.h" />
+    <ClInclude Include="Util\XorStr\XorStr.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SDK\hl2_src\game\server\base.txt" />

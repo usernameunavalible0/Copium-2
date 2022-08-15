@@ -1,6 +1,7 @@
 #include "EngineVGui.h"
 
 #include "../../Features/ESP/ESP.h"
+#include "../../Features/Menu/Menu.h"
 
 using namespace Hooks;
 
@@ -30,6 +31,7 @@ void __fastcall EngineVGui::Paint::Detour(void* ecx, void* edx, int mode)
 			}
 
 			G::Draw.String(EFonts::DEBUG, 5, 5, { 204, 204, 204, 255 }, TXT_DEFAULT, L"Copium-v2 TF2");
+			F::Menu.Run();
 		}
 		pfFinishDrawing(I::MatSystemSurface);
 	}

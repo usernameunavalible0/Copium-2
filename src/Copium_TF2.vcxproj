@@ -73,14 +73,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <TargetName>Copium</TargetName>
-    <OutDir>$(SolutionDir)..\bin</OutDir>
-    <IntDir>$(SolutionDir)..\obj</IntDir>
+    <OutDir>$(SolutionDir)..\bin\</OutDir>
+    <IntDir>$(SolutionDir)..\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>Copium</TargetName>
-    <OutDir>$(SolutionDir)..\bin</OutDir>
-    <IntDir>$(SolutionDir)..\obj</IntDir>
+    <OutDir>$(SolutionDir)..\bin\</OutDir>
+    <IntDir>$(SolutionDir)..\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -163,6 +163,8 @@
     <ClCompile Include="DllMain.cpp" />
     <ClCompile Include="Entry\Entry.cpp" />
     <ClCompile Include="Features\ESP\ESP.cpp" />
+    <ClCompile Include="Features\Menu\InputHelper\InputHelper.cpp" />
+    <ClCompile Include="Features\Menu\Menu.cpp" />
     <ClCompile Include="Features\Misc\Misc.cpp" />
     <ClCompile Include="Features\Prediction\Prediction.cpp" />
     <ClCompile Include="Features\Vars.cpp" />
@@ -292,6 +294,8 @@
   <ItemGroup>
     <ClInclude Include="Entry\Entry.h" />
     <ClInclude Include="Features\ESP\ESP.h" />
+    <ClInclude Include="Features\Menu\InputHelper\InputHelper.h" />
+    <ClInclude Include="Features\Menu\Menu.h" />
     <ClInclude Include="Features\Misc\Misc.h" />
     <ClInclude Include="Features\Prediction\Prediction.h" />
     <ClInclude Include="Features\Vars.h" />
@@ -677,6 +681,7 @@
     <ClInclude Include="Util\Pattern\Pattern.h" />
     <ClInclude Include="Util\Util.h" />
     <ClInclude Include="Util\VFunc\VFunc.h" />
+    <ClInclude Include="Util\XorStr\XorStr.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SDK\hl2_src\game\server\base.txt" />
