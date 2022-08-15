@@ -81,6 +81,11 @@ namespace Vars
 		inline CVar<bool> Tracers{ true, L"Bullet Tracers" };
 		inline CVar<bool> ToolTips{ true, L"ToolTips" };
 		inline CVar<bool> Snow{ true, L"Snow" };
+		inline CVar<int> FieldOfView{ 110, L"Field Of View" };
+		inline CVar<bool> RemoveZoom{ true, L"Remove Zoom" };
+		inline CVar<bool> RemoveScope{ true, L"Remove Scope" };
+		inline CVar<int> ThirdPersonKey{ 0x52, L"Third Person Key" };
+		inline CVar<bool> ThirdPerson{ true, L"ThirdPerson" };
 	}
 
 	namespace Misc

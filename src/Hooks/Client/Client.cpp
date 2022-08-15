@@ -2,6 +2,7 @@
 
 #include "../../Features/Vars.h"
 #include "../NetChannel/NetChannel.h"
+#include "../../Features/Visual/Visuals.h"
 
 using namespace Hooks;
 
@@ -38,6 +39,11 @@ void __fastcall BaseClient::CreateMove::Detour(void* ecx, void* edx, int sequenc
 void __fastcall BaseClient::FrameStageNotify::Detour(void* ecx, void* edx, ClientFrameStage_t curStage)
 {
 	Table.Original<FN>(Index)(ecx, edx, curStage);
+
+	if (curStage == ClientFrameStage_t::FRAME_RENDER_START)
+	{
+		F::Visual.ThirdPerson();
+	}
 
 	if (curStage == ClientFrameStage_t::FRAME_NET_UPDATE_START)
 	{

@@ -167,6 +167,7 @@
     <ClCompile Include="Features\Menu\Menu.cpp" />
     <ClCompile Include="Features\Misc\Misc.cpp" />
     <ClCompile Include="Features\Prediction\Prediction.cpp" />
+    <ClCompile Include="Features\Visual\Visuals.cpp" />
     <ClCompile Include="Hooks\BaseEntity\BaseEntity.cpp" />
     <ClCompile Include="Hooks\BasePlayer\BasePlayer.cpp" />
     <ClCompile Include="Hooks\ClientEntityList\ClientEntityList.cpp" />
@@ -282,6 +283,7 @@
     <ClCompile Include="SDK\hl2_src\tier2\vconfig.cpp" />
     <ClCompile Include="SDK\Interfaces\Interfaces.cpp" />
     <ClCompile Include="SDK\NetVarManager\NetVarManager.cpp" />
+    <ClCompile Include="Util\Hash\Hash.cpp" />
     <ClCompile Include="Util\Hook\MinHook\buffer.c" />
     <ClCompile Include="Util\Hook\MinHook\hde\hde32.c" />
     <ClCompile Include="Util\Hook\MinHook\hde\hde64.c" />
@@ -299,6 +301,7 @@
     <ClInclude Include="Features\Misc\Misc.h" />
     <ClInclude Include="Features\Prediction\Prediction.h" />
     <ClInclude Include="Features\Vars.h" />
+    <ClInclude Include="Features\Visual\Visuals.h" />
     <ClInclude Include="Hooks\BaseEntity\BaseEntity.h" />
     <ClInclude Include="Hooks\BasePlayer\BasePlayer.h" />
     <ClInclude Include="Hooks\ClientEntityList\ClientEntityList.h" />
@@ -669,6 +672,7 @@
     <ClInclude Include="SDK\hl2_src\public\worldsize.h" />
     <ClInclude Include="SDK\Interfaces\Interfaces.h" />
     <ClInclude Include="SDK\NetVarManager\NetVarManager.h" />
+    <ClInclude Include="Util\Hash\Hash.h" />
     <ClInclude Include="Util\Hook\Hook.h" />
     <ClInclude Include="Util\Hook\MinHook\buffer.h" />
     <ClInclude Include="Util\Hook\MinHook\hde\hde32.h" />

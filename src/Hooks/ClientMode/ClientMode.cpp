@@ -3,6 +3,7 @@
 #include "../../Features/Vars.h"
 #include "../../Features/Misc/Misc.h"
 #include "../../Features/Prediction/Prediction.h"
+#include "../../Features/Visual/Visuals.h"
 
 #include "../CL_Main/CL_Main.h"
 
@@ -11,6 +12,7 @@ using namespace Hooks;
 void __fastcall ClientMode::OverrideView::Detour(void* ecx, void* edx, CViewSetup* pSetup)
 {
 	Table.Original<FN>(Index)(ecx, edx, pSetup);
+	F::Visual.FOV(pSetup);
 }
 
 bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInputSampleTime, CUserCmd* cmd)
@@ -44,6 +46,12 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 
 bool __fastcall ClientMode::ShouldDrawViewModel::Detour(void* ecx, void* edx)
 {
+	if (const auto& pLocal = g_EntityCache.GetLocal())
+	{
+		if (pLocal->IsZoomed() && Vars::Visual::RemoveScope.m_Var && Vars::Visual::RemoveZoom.m_Var && !I::Input->CAM_IsThirdPerson())
+			return true;
+	}
+
 	return Table.Original<FN>(Index)(ecx, edx);
 }
 

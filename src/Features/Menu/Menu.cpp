@@ -691,6 +691,11 @@ void CMenu::Run()
 								CheckBox(Vars::Visual::Tracers, L"Bullet Tracers?");
 								CheckBox(Vars::Visual::ToolTips, L"Menu ToolTips?");
 								CheckBox(Vars::Visual::Snow, L"Menu Snow?");
+								InputInt(Vars::Visual::FieldOfView, 70, 140);
+								CheckBox(Vars::Visual::RemoveScope, L"Remove Sniper Scope?");
+								CheckBox(Vars::Visual::RemoveZoom, L"Remove Sniper Scope Zoom");
+								InputKey(Vars::Visual::ThirdPersonKey, L"Third Person Activation Key");
+								CheckBox(Vars::Visual::ThirdPerson, L"Active the use of this thirdperson key");
 							}
 							GroupBoxEnd(L"Main", 210);
 
