@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../hl2_src/hl2_src.h"
+#include "../EntityCache/EntityCache.h"
 
 #define XASSERTFALSE(x) if (x) { Error(#x); return false; }
 

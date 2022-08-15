@@ -107,3 +107,8 @@ inline T UTIL_EntityAs(int entindex)
 
 	return pEntity ? pEntity->As<T>() : nullptr;
 }
+
+inline IClientEntity* UTIL_EntityByHandle(CBaseHandle handle)
+{
+	return I::ClientEntityList->GetClientEntityFromHandle(handle);
+}
