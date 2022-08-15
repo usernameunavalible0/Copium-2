@@ -660,6 +660,8 @@ void CMenu::Run()
 								CheckBox(Vars::ESP::Players::ActiveWeapon, L"ESP for the players Active Weapon?");
 								CheckBox(Vars::ESP::Players::HealthText, L"Text to show Player health?");
 								CheckBox(Vars::ESP::Players::Name, L"Text to show Player Name");
+								CheckBox(Vars::ESP::Players::Box, L"2D Box around the player?");
+								CheckBox(Vars::ESP::Players::HealthBar, L"Bar to the side of the player to show health");
 							}
 							GroupBoxEnd(L"Players", 210);
 

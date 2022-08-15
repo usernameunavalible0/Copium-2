@@ -8,7 +8,6 @@
     <ClCompile Include="SDK\NetVarManager\NetVarManager.cpp" />
     <ClCompile Include="SDK\Interfaces\Interfaces.cpp" />
     <ClCompile Include="Hooks\Hooks.cpp" />
-    <ClCompile Include="Features\Vars.cpp" />
     <ClCompile Include="Util\VFunc\VFunc.cpp" />
     <ClCompile Include="Util\Hook\MinHook\buffer.c" />
     <ClCompile Include="Util\Hook\MinHook\hook.c" />

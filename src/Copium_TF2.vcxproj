@@ -167,7 +167,6 @@
     <ClCompile Include="Features\Menu\Menu.cpp" />
     <ClCompile Include="Features\Misc\Misc.cpp" />
     <ClCompile Include="Features\Prediction\Prediction.cpp" />
-    <ClCompile Include="Features\Vars.cpp" />
     <ClCompile Include="Hooks\BaseEntity\BaseEntity.cpp" />
     <ClCompile Include="Hooks\BasePlayer\BasePlayer.cpp" />
     <ClCompile Include="Hooks\ClientEntityList\ClientEntityList.cpp" />

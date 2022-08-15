@@ -57,6 +57,17 @@ void CFeatures_ESP::Render(C_TFPlayer* pLocal)
 					nDrawY += G::Draw.GetFontHeight(EFonts::ESP_NAME);
 				}
 
+				if (Vars::ESP::Players::Box.m_Var)
+				{
+					G::Draw.OutlinedRect(x, y, w, h, clrTeam);
+
+					//Outline
+					G::Draw.OutlinedRect(x - 1, y - 1, w + 2, h + 2, COLOR_BLACK);
+					
+					//Inline
+					G::Draw.OutlinedRect(x + 1, y + 1, w - 2, h - 2, COLOR_BLACK);
+				}
+
 				if (Vars::ESP::Players::HealthText.m_Var)
 				{
 					G::Draw.String(EFonts::ESP, nDrawX, nDrawY, clrHealth, TXT_CENTERXY, L"%i / %ihp", nHealth, nMaxHealth);
@@ -72,6 +83,24 @@ void CFeatures_ESP::Render(C_TFPlayer* pLocal)
 						G::Draw.String(EFonts::ESP_WEAPON, nDrawX, nDrawY, COLOR_GREY, TXT_CENTERXY, pWeapon->GetName() + 10); //tf_weapon_
 						nDrawY += G::Draw.GetFontHeight(EFonts::ESP_WEAPON);
 					}
+				}
+
+				if (Vars::ESP::Players::HealthBar.m_Var)
+				{
+					x -= 1;
+
+					const float flMaxHealth = static_cast<float>(nMaxHealth);
+					const float flHealth = Clamp<float>(static_cast<float>(nHealth), 1.0f, flMaxHealth);
+
+					static const int nWidth = 2;
+					const int nHeight = (h + (flHealth < flMaxHealth ? 2 : 1));
+					const int nHeight2 = (h + 1);
+
+					const float ratio = (flHealth / flMaxHealth);
+					G::Draw.Rect(static_cast<int>(((x - nWidth) - 2)), static_cast<int>((y + nHeight - (nHeight * ratio))), nWidth, static_cast<int>((nHeight * ratio)), clrHealth);
+					G::Draw.OutlinedRect(static_cast<int>(((x - nWidth) - 2) - 1), static_cast<int>((y + nHeight - (nHeight * ratio)) - 1), nWidth + 2, static_cast<int>((nHeight * ratio) + 1), COLOR_BLACK);
+
+					x += 1;
 				}
 
 				break;

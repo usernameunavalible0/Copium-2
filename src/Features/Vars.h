@@ -61,6 +61,8 @@ namespace Vars
 			inline CVar<bool> ActiveWeapon{ true, L"Active Weapon" };
 			inline CVar<bool> HealthText{ true, L"Health Text" };
 			inline CVar<bool> Name{ true, L"Name" };
+			inline CVar<bool> Box{ false, L"2D Box" };
+			inline CVar<bool> HealthBar{ true, L"Health Bar" };
 		}
 
 		namespace Buildings
