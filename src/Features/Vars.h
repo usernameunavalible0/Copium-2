@@ -85,7 +85,7 @@ namespace Vars
 		inline CVar<bool> RemoveZoom{ true, L"Remove Zoom" };
 		inline CVar<bool> RemoveScope{ true, L"Remove Scope" };
 		inline CVar<int> ThirdPersonKey{ 0x52, L"Third Person Key" };
-		inline CVar<bool> ThirdPerson{ true, L"ThirdPerson" };
+		inline CVar<bool> ThirdPerson{ false, L"ThirdPerson" };
 	}
 
 	namespace Misc
