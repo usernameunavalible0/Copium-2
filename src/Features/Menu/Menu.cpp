@@ -548,6 +548,172 @@ void CMenu::Run()
 			G::Draw.String(FONT_MENU, 22, 32 + (G::Draw.m_Fonts.Element(G::Draw.m_Fonts.Find(FONT_MENU)).m_nTall * 2), Vars::Menu::Colors::Text, TXT_DEFAULT, _("Developers: DepressedPotato"));
 		}
 
+		//Do the Window
+		{
+			g_InputHelper.Drag(
+				g_InputHelper.m_nMouseX,
+				g_InputHelper.m_nMouseY,
+				Vars::Menu::Position.x,
+				Vars::Menu::Position.y,
+				Vars::Menu::Position.width,
+				Vars::Menu::TitleBarH,
+				Vars::Menu::TitleBarH);
+
+			G::Draw.Rect(
+				Vars::Menu::Position.x,
+				Vars::Menu::Position.y,
+				Vars::Menu::Position.width,
+				Vars::Menu::Position.height,
+				Vars::Menu::Colors::WindowBackground);
+
+			G::Draw.Rect(
+				Vars::Menu::Position.x,
+				Vars::Menu::Position.y - Vars::Menu::TitleBarH,
+				Vars::Menu::Position.width,
+				Vars::Menu::TitleBarH,
+				Vars::Menu::Colors::TitleBar);
+
+			G::Draw.String(FONT_MENU,
+				Vars::Menu::Position.x + (Vars::Menu::Position.width / 2),
+				Vars::Menu::Position.y - (Vars::Menu::TitleBarH / 2),
+				Vars::Menu::Colors::Text,
+				TXT_CENTERXY,
+				"%ls", _(L"Team Fortress 2"));
+		}
+
+		//Do the Widgets
+		{
+			enum struct EMainTabs { TAB_AIM, TAB_VISUALS, TAB_MISC };
+			enum struct EVisualTabs { TAB_ESP, TAB_MISC };
+
+			m_LastWidget = { Vars::Menu::Position.x + Vars::Menu::SpacingX, Vars::Menu::Position.y, 0, 0 };
+
+			static EMainTabs Tab = EMainTabs::TAB_AIM;
+			{
+				if (Button(_(L"Aim"), Tab == EMainTabs::TAB_AIM))
+					Tab = EMainTabs::TAB_AIM;
+
+				if (Button(_(L"Visuals"), Tab == EMainTabs::TAB_VISUALS))
+					Tab = EMainTabs::TAB_VISUALS;
+
+				if (Button(_(L"Misc"), Tab == EMainTabs::TAB_MISC))
+					Tab = EMainTabs::TAB_MISC;
+
+			}
+
+			Separator();
+
+			switch (Tab)
+			{
+				case EMainTabs::TAB_AIM:
+				{
+					break;
+				}
+
+				case EMainTabs::TAB_VISUALS:
+				{
+					static EVisualTabs Tab = EVisualTabs::TAB_ESP;
+					{
+						Rect_t checkpoint_line = m_LastWidget;
+						checkpoint_line.x -= Vars::Menu::SpacingX;
+						checkpoint_line.y += Vars::Menu::ButtonHSmall + (Vars::Menu::SpacingY * 2);
+						Rect_t checkpoint_move = m_LastWidget;
+
+						if (Button(_(L"ESP"), Tab == EVisualTabs::TAB_ESP, Vars::Menu::ButtonWSmall, Vars::Menu::ButtonHSmall))
+							Tab = EVisualTabs::TAB_ESP;
+
+						checkpoint_move.x += Vars::Menu::ButtonWSmall + Vars::Menu::SpacingX;
+						m_LastWidget = checkpoint_move;
+
+						if (Button(_(L"Misc"), Tab == EVisualTabs::TAB_MISC, Vars::Menu::ButtonWSmall, Vars::Menu::ButtonHSmall))
+							Tab = EVisualTabs::TAB_MISC;
+
+						checkpoint_move.x += Vars::Menu::ButtonWSmall + Vars::Menu::SpacingX;
+						m_LastWidget = checkpoint_move;
+
+						m_LastWidget = checkpoint_line;
+						G::Draw.Line(checkpoint_line.x, checkpoint_line.y, Vars::Menu::Position.x + Vars::Menu::Position.width - 1, checkpoint_line.y, Vars::Menu::Colors::OutlineMenu);
+						checkpoint_line.x += Vars::Menu::SpacingX;
+						checkpoint_line.y += Vars::Menu::SpacingY;
+						m_LastWidget = checkpoint_line;
+					}
+
+					switch (Tab)
+					{
+						case EVisualTabs::TAB_ESP:
+						{
+							Rect_t checkpoint = m_LastWidget;
+
+							GroupBoxStart();
+							{
+								CheckBox(Vars::ESP::Enabled, L"ESP Enabled?");
+							}
+							GroupBoxEnd(_(L"Main"), 210);
+
+							checkpoint.x += 210 + Vars::Menu::SpacingX;
+							m_LastWidget = checkpoint;
+
+							GroupBoxStart();
+							{
+								CheckBox(Vars::ESP::Players::Enabled, L"Player ESP?");
+								CheckBox(Vars::ESP::Players::IgnoreTeam, L"Ignore Local Team for Player ESP?");
+								CheckBox(Vars::ESP::Players::ActiveWeapon, L"ESP for the players Active Weapon?");
+								CheckBox(Vars::ESP::Players::HealthText, L"Text to show Player health?");
+								CheckBox(Vars::ESP::Players::Name, L"Text to show Player Name");
+							}
+							GroupBoxEnd(L"Players", 210);
+
+							checkpoint.x += 210 + Vars::Menu::SpacingX;
+							m_LastWidget = checkpoint;
+
+							GroupBoxStart();
+							{
+								CheckBox(Vars::ESP::Buildings::Enabled, L"Building ESP?");
+								CheckBox(Vars::ESP::Buildings::IgnoreTeam, L"Ignore Local Team?");
+								CheckBox(Vars::ESP::Buildings::HealthText, L"Text to show building health?");
+								CheckBox(Vars::ESP::Buildings::Name, L"Text to show building type?");
+								CheckBox(Vars::ESP::Buildings::IgnoreTeam, L"Text to show Misc info about the building?");
+							}
+							GroupBoxEnd(L"Buildings", 210);
+
+							break;
+						}
+
+						case EVisualTabs::TAB_MISC:
+						{
+							Rect_t checkpoint = m_LastWidget;
+
+							GroupBoxStart();
+							{
+								CheckBox(Vars::Visual::RemoveVisualRecoil, L"Remove visual recoil?");
+								CheckBox(Vars::Visual::Tracers, L"Bullet Tracers?");
+								CheckBox(Vars::Visual::ToolTips, L"Menu ToolTips?");
+								CheckBox(Vars::Visual::Snow, L"Menu Snow?");
+							}
+							GroupBoxEnd(L"Main", 210);
+
+							break;
+						}
+					}
+
+					break;
+				}
+
+				case EMainTabs::TAB_MISC:
+				{
+					GroupBoxStart();
+					{
+						CheckBox(Vars::Misc::Bunnyhop, L"Automatic Bunnyhop?");
+						CheckBox(Vars::Misc::BypassPure, L"Bypass sv_pure?");
+					}
+					GroupBoxEnd(L"Main", 210);
+
+					break;
+				}
+			}
+
+		}
+
 		DrawTooltip();
 
 		if (Vars::Visual::Snow.m_Var)

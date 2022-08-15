@@ -52,38 +52,38 @@ namespace Vars
 
 	namespace ESP
 	{
-		inline CVar<bool> Enabled{ true, L"Enable ESP?" };
+		inline CVar<bool> Enabled{ true, L"Active" };
 
 		namespace Players
 		{
-			inline CVar<bool> Enabled{ true, L"Player ESP?" };
-			inline CVar<bool> IgnoreTeam{ true, L"Ignore Local Team for Player ESP" };
-			inline CVar<bool> ActiveWeapon{ true, L"ESP for the players Active Weapon?" };
-			inline CVar<bool> HealthText{ true, L"Text to show Player Health?" };
-			inline CVar<bool> Name{ true, L"Text to show player name" };
+			inline CVar<bool> Enabled{ true, L"Active" };
+			inline CVar<bool> IgnoreTeam{ true, L"Ignore Team" };
+			inline CVar<bool> ActiveWeapon{ true, L"Active Weapon" };
+			inline CVar<bool> HealthText{ true, L"Health Text" };
+			inline CVar<bool> Name{ true, L"Name" };
 		}
 
 		namespace Buildings
 		{
-			inline CVar<bool> Enabled{ true, L"Building ESP?" };
-			inline CVar<bool> IgnoreTeam{ false, L"Ignore local team for building ESP?" };
-			inline CVar<bool> HealthText{ true, L"Text to show Entity Health?" };
-			inline CVar<bool> Name{ true, L"Text to show Building type?" };
-			inline CVar<bool> Info{ true, L"Text to show Misc info about building?" };
+			inline CVar<bool> Enabled{ true, L"Active" };
+			inline CVar<bool> IgnoreTeam{ false, L"Ignore Team" };
+			inline CVar<bool> HealthText{ true, L"Health Text" };
+			inline CVar<bool> Name{ true, L"Name" };
+			inline CVar<bool> Info{ true, L"Info" };
 		}
 	}
 
 	namespace Visual
 	{
-		inline CVar<bool> RemoveVisualRecoil{ true, L"Remove Visual Recoil?" };
-		inline CVar<bool> Tracers{ true, L"Bullet Tracers?" };
-		inline CVar<bool> ToolTips{ true, L"ToolTips for the Cheat Menu?" };
-		inline CVar<bool> Snow{ true, L"Menu snow?" };
+		inline CVar<bool> RemoveVisualRecoil{ true, L"Remove Visual Recoil" };
+		inline CVar<bool> Tracers{ true, L"Bullet Tracers" };
+		inline CVar<bool> ToolTips{ true, L"ToolTips" };
+		inline CVar<bool> Snow{ true, L"Snow" };
 	}
 
 	namespace Misc
 	{
-		inline CVar<bool> Bunnyhop{ true, L"Automatic Bunnyhop?"};
-		inline CVar<bool> BypassPure{ true, L"Bypass sv_pure?" };
+		inline CVar<bool> Bunnyhop{ true, L"Bunnyhop"};
+		inline CVar<bool> BypassPure{ true, L"Bypass Pure" };
 	}
 }
