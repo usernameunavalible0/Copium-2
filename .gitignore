@@ -1,5 +1,6 @@
 
-.vs/Polonium_TF2/v16/.suo
+.vs
+.sln
 *.db
 *.ipch
 *.db-wal
