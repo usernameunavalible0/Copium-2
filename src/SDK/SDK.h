@@ -17,17 +17,67 @@
 
 inline QAngle m_vPunchAngles;
 
-/*
+inline Vector m_vPredictedPos = {};
+
+inline EWeaponType GetWeaponType(C_TFWeaponBase* pWeapon)
+{
+	if (!pWeapon)
+		return EWeaponType::UNKNOWN;
+
+	if (pWeapon->GetSlot() == 2)
+		return EWeaponType::MELEE;
+
+	switch (pWeapon->GetWeaponID())
+	{
+	case TF_WEAPON_ROCKETLAUNCHER:
+	case TF_WEAPON_GRENADELAUNCHER:
+	case TF_WEAPON_FLAREGUN:
+	case TF_WEAPON_COMPOUND_BOW:
+	case TF_WEAPON_ROCKETLAUNCHER_DIRECTHIT:
+	case TF_WEAPON_CROSSBOW:
+	case TF_WEAPON_PARTICLE_CANNON:
+	case TF_WEAPON_DRG_POMSON:
+	case TF_WEAPON_FLAREGUN_REVENGE:
+	case TF_WEAPON_CANNON:
+	case TF_WEAPON_SYRINGEGUN_MEDIC:
+	case TF_WEAPON_SHOTGUN_BUILDING_RESCUE:
+	case TF_WEAPON_FLAMETHROWER:
+	{
+		return EWeaponType::PROJECTILE;
+	}
+
+	case TF_WEAPON_PIPEBOMBLAUNCHER:
+	case 109: //dragon's fury
+	{
+		//broken Idk
+		return EWeaponType::UNKNOWN;
+	}
+
+	default:
+	{
+		int nDamageType = pWeapon->GetDamageType();
+
+		if (nDamageType & DMG_BULLET || nDamageType && DMG_BUCKSHOT)
+			return EWeaponType::HITSCAN;
+
+		break;
+	}
+	}
+
+	return EWeaponType::UNKNOWN;
+}
+
+
 inline void GetProjectileFireSetup(C_TFPlayer* pPlayer, const QAngle &vViewAngles, Vector vOffset, Vector* vSrc)
 {
-	if (g_ConVars.cl_flipviewmodels->GetInt())
+	if (G::ConVars.cl_flipviewmodels->GetInt())
 		vOffset.y *= -1.0f;
 
-	Vec3 vecForward = Vec3(), vecRight = Vec3(), vecUp = Vec3();
-	Math::AngleVectors(vViewAngles, &vecForward, &vecRight, &vecUp);
+	Vector vecForward = Vector(), vecRight = Vector(), vecUp = Vector();
+	AngleVectors(vViewAngles, &vecForward, &vecRight, &vecUp);
 
-	*vSrc = pPlayer->GetShootPos() + (vecForward * vOffset.x) + (vecRight * vOffset.y) + (vecUp * vOffset.z);
-}*/
+	*vSrc = pPlayer->Weapon_ShootPosition() + (vecForward * vOffset.x) + (vecRight * vOffset.y) + (vecUp * vOffset.z);
+}
 
 inline bool CanShoot(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon) {
 	if (!pLocal->IsAlive() || pLocal->IsTaunting() || pLocal->InCond(TF_COND_PHASE) || pLocal->InCond(TF_COND_HALLOWEEN_GHOST_MODE) || pLocal->InCond(TF_COND_HALLOWEEN_KART))

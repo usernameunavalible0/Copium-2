@@ -137,6 +137,7 @@
     <ClCompile Include="Features\Aimbot\AimbotHitscan\AimbotHitscan.cpp" />
     <ClCompile Include="Features\Aimbot\AimbotMelee\AimbotMelee.cpp" />
     <ClCompile Include="Features\Aimbot\Aimbot.cpp" />
+    <ClCompile Include="Features\Aimbot\AimbotProjectile\AimbotProjectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entry\Entry.h" />
@@ -536,6 +537,7 @@
     <ClInclude Include="Features\Aimbot\AimbotHitscan\AimbotHitscan.h" />
     <ClInclude Include="Features\Aimbot\AimbotMelee\AimbotMelee.h" />
     <ClInclude Include="Features\Aimbot\Aimbot.h" />
+    <ClInclude Include="Features\Aimbot\AimbotProjectile\AimbotProjectile.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SDK\hl2_src\game\server\base.txt" />

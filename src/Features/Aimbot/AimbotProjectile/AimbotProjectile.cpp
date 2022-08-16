@@ -206,7 +206,7 @@ bool CAimbotProjectile::CalcProjAngle(const Vector& vLocalPos, const Vector& vTa
 
 bool CAimbotProjectile::SolveProjectile(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon, CUserCmd* pCmd, Predictor_t& Predictor, const ProjectileInfo_t& ProjInfo, Solution_t& out)
 {
-	INetChannelInfo* pNetChannel = reinterpret_cast<INetChannelInfo*>(g_Interfaces.Engine->GetNetChannelInfo());
+	INetChannelInfo* pNetChannel = reinterpret_cast<INetChannelInfo*>(I::EngineClient->GetNetChannelInfo());
 
 	if (!pNetChannel)
 		return false;
@@ -265,7 +265,7 @@ bool CAimbotProjectile::SolveProjectile(C_TFPlayer* pLocal, C_TFWeaponBase* pWea
 		case TF_WEAPON_PIPEBOMBLAUNCHER:
 		{
 			Vector vecOffset(16.0f, 8.0f, -6.0f);
-			GetProjectile(pLocal, pCmd->viewangles, vecOffset, &vLocalPos);
+			GetProjectileFireSetup(pLocal, pCmd->viewangles, vecOffset, &vLocalPos);
 			break;
 		}
 
@@ -277,7 +277,7 @@ bool CAimbotProjectile::SolveProjectile(C_TFPlayer* pLocal, C_TFWeaponBase* pWea
 
 		if (out.m_flTime < fCorrectTime)
 		{
-			Vec3 vVisCheck = vLocalPos;
+			Vector vVisCheck = vLocalPos;
 
 			switch (pWeapon->GetWeaponID())
 			{
@@ -288,14 +288,14 @@ bool CAimbotProjectile::SolveProjectile(C_TFPlayer* pLocal, C_TFWeaponBase* pWea
 			case TF_WEAPON_COMPOUND_BOW:
 			case TF_WEAPON_SYRINGEGUN_MEDIC:
 			{
-				if (g_GlobalInfo.m_nCurItemDefIndex != Soldier_m_TheOriginal)
+				if (g_Globals.m_nCurItemDefIndex != Soldier_m_TheOriginal)
 				{
-					Vec3 vecOffset(23.5f, 12.0f, -3.0f);
+					Vector vecOffset(23.5f, 12.0f, -3.0f);
 
 					if (pLocal->IsDucking())
 						vecOffset.z = 8.0f;
 
-					Utils::GetProjectileFireSetup(pLocal, pCmd->viewangles, vecOffset, &vVisCheck);
+					GetProjectileFireSetup(pLocal, pCmd->viewangles, vecOffset, &vVisCheck);
 				}
 
 				break;
@@ -304,10 +304,10 @@ bool CAimbotProjectile::SolveProjectile(C_TFPlayer* pLocal, C_TFWeaponBase* pWea
 			case TF_WEAPON_GRENADELAUNCHER:
 			case TF_WEAPON_PIPEBOMBLAUNCHER:
 			{
-				Vec3 vecAngle = Vec3(), vecForward = Vec3(), vecRight = Vec3(), vecUp = Vec3();
-				Math::AngleVectors({ -RAD2DEG(out.m_flPitch), RAD2DEG(out.m_flYaw), 0.0f }, &vecForward, &vecRight, &vecUp);
-				Vec3 vecVelocity = ((vecForward * ProjInfo.m_flVelocity) - (vecUp * 200.0f));
-				Math::VectorAngles(vecVelocity, vecAngle);
+				QAngle vecAngle = QAngle(); Vector vecForward = Vector(), vecRight = Vector(), vecUp = Vector();
+				AngleVectors({ -RAD2DEG(out.m_flPitch), RAD2DEG(out.m_flYaw), 0.0f }, &vecForward, &vecRight, &vecUp);
+				Vector vecVelocity = ((vecForward * ProjInfo.m_flVelocity) - (vecUp * 200.0f));
+				VectorAngles(vecVelocity, vecAngle);
 				out.m_flPitch = -DEG2RAD(vecAngle.x);
 
 				break;
@@ -316,15 +316,314 @@ bool CAimbotProjectile::SolveProjectile(C_TFPlayer* pLocal, C_TFWeaponBase* pWea
 			default: break;
 			}
 
-			Utils::TraceHull(vVisCheck, vPredictedPos, Vec3(-2, -2, -2), Vec3(2, 2, 2), MASK_SOLID_BRUSHONLY, &TraceFilter, &Trace);
+			UTIL_TraceHull(vVisCheck, vPredictedPos, Vector(-2, -2, -2), Vector(2, 2, 2), MASK_SOLID_BRUSHONLY, &TraceFilter, &Trace);
 
 			if (Trace.DidHit())
 				return false;
 
-			g_GlobalInfo.m_vPredictedPos = vPredictedPos;
+			m_vPredictedPos = vPredictedPos;
 			return true;
 		}
 	}
 
 	return false;
+}
+
+Vector CAimbotProjectile::GetAimPos(C_TFPlayer* pLocal, C_BaseAnimating* pEntity)
+{
+	switch (Vars::Aimbot::Projectile::AimPosition.m_Var)
+	{
+	case 0: return pEntity->WorldSpaceCenter();
+	case 1: return pEntity->WorldSpaceCenter() - Vector(0.0f, 0.0f, 27.0f);
+	case 2:
+	{
+		switch (pLocal->m_iClass())
+		{
+		case TF_CLASS_SOLDIER: return pEntity->WorldSpaceCenter() - Vector(0.0f, 0.0f, 27.0f);
+
+		case TF_CLASS_SNIPER:
+		{
+			Vector vPos; pEntity->GetHitboxPosition(HITBOX_HEAD, vPos);
+
+			Vector vEntForward = {};
+			AngleVectors(pEntity->EyeAngles(), &vEntForward);
+			Vector vToEnt = pEntity->GetAbsOrigin() - pLocal->GetAbsOrigin();
+			vToEnt.NormalizeInPlace();
+
+			if (vToEnt.Dot(vEntForward) > 0.1071f)
+				vPos.z += 5.0f;
+
+			return vPos;
+		}
+
+		default: return pEntity->WorldSpaceCenter();
+		}
+	}
+	default: return Vector();
+	}
+}
+
+ESortMethod CAimbotProjectile::GetSortMethod()
+{
+	switch (Vars::Aimbot::Projectile::SortMethod.m_Var) {
+	case 0: return ESortMethod::FOV;
+	case 1: return ESortMethod::DISTANCE;
+	default: return ESortMethod::UNKNOWN;
+	}
+}
+
+bool CAimbotProjectile::GetTargets(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon)
+{
+	ESortMethod SortMethod = GetSortMethod();
+
+	if (SortMethod == ESortMethod::FOV)
+		g_Globals.m_flCurAimFOV = Vars::Aimbot::Projectile::AimFOV.m_Var;
+
+	g_AimbotGlobal.m_vecTargets.clear();
+
+	Vector vLocalPos = pLocal->Weapon_ShootPosition();
+	QAngle vLocalAngles; I::EngineClient->GetViewAngles(vLocalAngles);
+
+	if (Vars::Aimbot::Global::AimPlayers.m_Var)
+	{
+		int nWeaponID = pWeapon->GetWeaponID();
+		bool bIsCrossbow = nWeaponID == TF_WEAPON_CROSSBOW;
+
+		for (const auto& pPlayer : g_EntityCache.GetGroup(bIsCrossbow ? EEntGroup::PLAYERS_ALL : EEntGroup::PLAYERS_ENEMIES))
+		{
+			const auto& Player = pPlayer->As<C_TFPlayer*>();
+
+			if (!Player->IsAlive() || Player->InCond(TF_COND_HALLOWEEN_GHOST_MODE) || Player == pLocal)
+				continue;
+
+			if (Player->GetTeamNumber() != pLocal->GetTeamNumber())
+			{
+				if (Vars::Aimbot::Global::IgnoreInvlunerable.m_Var && Player->IsInvulnerable())
+					continue;
+
+				if (Vars::Aimbot::Global::IgnoreCloaked.m_Var && Player->IsCloaked())
+					continue;
+
+				if (Vars::Aimbot::Global::IgnoreTaunting.m_Var && Player->IsTaunting())
+					continue;
+
+				//if (Vars::Aimbot::Global::IgnoreFriends.m_Var && g_EntityCache.Friends[Player->GetIndex()])
+				//	continue;
+			}
+
+			Vector vPos = GetAimPos(pLocal, Player);
+			QAngle vAngleTo = CalcAngle(vLocalPos, vPos);
+			float flFOVTo = (SortMethod == ESortMethod::FOV) ? CalcFov(vLocalAngles, vAngleTo) : 0.0f;
+			float flDistTo = (SortMethod == ESortMethod::DISTANCE) ? vLocalPos.DistTo(vPos) : 0.0f;
+
+			if (SortMethod == ESortMethod::FOV && flFOVTo > Vars::Aimbot::Projectile::AimFOV.m_Var)
+				continue;
+
+			g_AimbotGlobal.m_vecTargets.push_back({ Player, ETargetType::PLAYER, vPos, vAngleTo, flFOVTo, flDistTo });
+		}
+	}
+
+	if (Vars::Aimbot::Global::AimBuildings.m_Var)
+	{
+		bool bIsRescueRanger = pWeapon->GetWeaponID() == TF_WEAPON_SHOTGUN_BUILDING_RESCUE;
+
+		for (const auto& pBuilding : g_EntityCache.GetGroup(bIsRescueRanger ? EEntGroup::BUILDINGS_ALL : EEntGroup::BUILDINGS_ENEMIES))
+		{
+			const auto& Building = pBuilding->As<C_BaseObject*>();
+			if (!Building->IsAlive())
+				continue;
+
+			Vector vPos = Building->WorldSpaceCenter();
+			QAngle vAngleTo = CalcAngle(vLocalPos, vPos);
+			float flFOVTo = SortMethod == ESortMethod::FOV ? CalcFov(vLocalAngles, vAngleTo) : 0.0f;
+			float flDistTo = SortMethod == ESortMethod::DISTANCE ? vLocalPos.DistTo(vPos) : 0.0f;
+
+			if (SortMethod == ESortMethod::FOV && flFOVTo > Vars::Aimbot::Projectile::AimFOV.m_Var)
+				continue;
+
+			g_AimbotGlobal.m_vecTargets.push_back({ Building, ETargetType::BUILDING, vPos, vAngleTo, flFOVTo, flDistTo });
+		}
+	}
+
+	return !g_AimbotGlobal.m_vecTargets.empty();
+}
+
+bool CAimbotProjectile::VerifyTarget(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon, CUserCmd* pCmd, Target_t& Target)
+{
+	ProjectileInfo_t ProjInfo = {};
+
+	if (!GetProjectileInfo(pWeapon, ProjInfo))
+		return false;
+
+	Vector vVelocity = Vector();
+	Vector vAcceleration = Vector();
+
+	switch (Target.m_TargetType)
+	{
+	case ETargetType::PLAYER: {
+		vVelocity = Target.m_pEntity->As<C_TFPlayer*>()->m_vecVelocity();
+		vAcceleration = Vector(0.0f, 0.0f, G::ConVars.sv_gravity->GetFloat() * ((Target.m_pEntity->As<C_TFPlayer*>()->InCond(TF_COND_PARACHUTE_ACTIVE)) ? 0.224f : 1.0f));
+		break;
+	}
+
+	default: break;
+	}
+
+	Predictor_t Predictor = {
+		Target.m_pEntity,
+		Target.m_vPos,
+		vVelocity,
+		vAcceleration
+	};
+
+	Solution_t Solution = {};
+
+	if (!SolveProjectile(pLocal, pWeapon, pCmd, Predictor, ProjInfo, Solution))
+		return false;
+
+	Target.m_vAngleTo = { -RAD2DEG(Solution.m_flPitch), RAD2DEG(Solution.m_flYaw), 0.0f };
+
+	return true;
+}
+
+bool CAimbotProjectile::GetTarget(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon, CUserCmd* pCmd, Target_t& Out)
+{
+	if (!GetTargets(pLocal, pWeapon))
+		return false;
+
+	if (Vars::Aimbot::Projectile::PerformanceMode.m_Var)
+	{
+		Target_t Target = g_AimbotGlobal.GetBestTarget(GetSortMethod());
+
+		if (!VerifyTarget(pLocal, pWeapon, pCmd, Target))
+			return false;
+
+		Out = Target;
+		return true;
+	}
+
+	else
+	{
+		g_AimbotGlobal.SortTargets(GetSortMethod());
+
+		for (auto& Target : g_AimbotGlobal.m_vecTargets)
+		{
+			if (!VerifyTarget(pLocal, pWeapon, pCmd, Target))
+				continue;
+
+			Out = Target;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void CAimbotProjectile::Aim(CUserCmd* pCmd, C_TFWeaponBase* pWeapon, QAngle& vAngle)
+{
+	vAngle -= m_vPunchAngles;
+	ClampAngles(vAngle);
+
+	switch (Vars::Aimbot::Projectile::AimMethod.m_Var)
+	{
+	case 0: {
+		pCmd->viewangles = vAngle;
+		I::EngineClient->SetViewAngles(pCmd->viewangles);
+		break;
+	}
+
+	case 1: {
+		G::Util.FixMovement(vAngle, pCmd);
+		pCmd->viewangles = vAngle;
+		break;
+	}
+
+	default: break;
+	}
+}
+
+bool CAimbotProjectile::ShouldFire(CUserCmd* pCmd)
+{
+	return (Vars::Aimbot::Global::AutoShoot.m_Var && g_Globals.m_bWeaponCanAttack);
+}
+
+bool CAimbotProjectile::IsAttacking(CUserCmd* pCmd, C_TFWeaponBase* pWeapon)
+{
+	if (g_Globals.m_nCurItemDefIndex == Soldier_m_TheBeggarsBazooka)
+	{
+		static bool bLoading = false;
+
+		if (pWeapon->Clip1() > 0)
+			bLoading = true;
+
+		if (!(pCmd->buttons & IN_ATTACK) && bLoading) {
+			bLoading = false;
+			return true;
+		}
+	}
+
+	else
+	{
+		if (pWeapon->GetWeaponID() == TF_WEAPON_COMPOUND_BOW)
+		{
+			static bool bCharging = false;
+
+			if (pWeapon->m_flChargeBeginTime() > 0.0f)
+				bCharging = true;
+
+			if (!(pCmd->buttons & IN_ATTACK) && bCharging) {
+				bCharging = false;
+				return true;
+			}
+		}
+
+		else
+		{
+			if ((pCmd->buttons & IN_ATTACK) && g_Globals.m_bWeaponCanAttack)
+				return true;
+		}
+	}
+
+	return false;
+}
+
+void CAimbotProjectile::Run(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon, CUserCmd* pCmd)
+{
+	m_bIsFlameThrower = false;
+
+	if (!Vars::Aimbot::Projectile::Active.m_Var)
+		return;
+
+	Target_t Target = {};
+
+	bool bShouldAim = (Vars::Aimbot::Global::AimKey.m_Var == VK_LBUTTON ? (pCmd->buttons & IN_ATTACK) : g_AimbotGlobal.IsKeyDown());
+
+	if (GetTarget(pLocal, pWeapon, pCmd, Target) && bShouldAim)
+	{
+		g_Globals.m_nCurrentTargetIdx = Target.m_pEntity->entindex();
+
+		//if (Vars::Aimbot::Projectile::AimMethod.m_Var == 1)
+			//g_Globals.m_vAimPos = g_Globals.m_vPredictedPos;
+
+		if (ShouldFire(pCmd))
+		{
+			pCmd->buttons |= IN_ATTACK;
+
+			if (g_Globals.m_nCurItemDefIndex == Soldier_m_TheBeggarsBazooka)
+			{
+				if (pWeapon->Clip1() > 0)
+					pCmd->buttons &= ~IN_ATTACK;
+			}
+
+			else
+			{
+				if (pWeapon->GetWeaponID() == TF_WEAPON_COMPOUND_BOW && pWeapon->m_flChargeBeginTime() > 0.0f)
+					pCmd->buttons &= ~IN_ATTACK;
+			}
+		}
+
+		bool bIsAttacking = IsAttacking(pCmd, pWeapon);
+
+		Aim(pCmd, pWeapon, Target.m_vAngleTo);
+	}
 }

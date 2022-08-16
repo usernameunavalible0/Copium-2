@@ -17,6 +17,9 @@ bool CConVars::Initialize()
 	sv_gravity = I::Cvar->FindVar("sv_gravity");
 	CHECKVAR(sv_gravity);
 
+	cl_flipviewmodels = I::Cvar->FindVar("cl_flipviewmodels");
+	CHECKVAR(cl_flipviewmodels);
+
 	//If we arrive here, return success.
 	return true;
 }

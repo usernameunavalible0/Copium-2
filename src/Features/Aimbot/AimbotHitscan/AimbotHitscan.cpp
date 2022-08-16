@@ -63,7 +63,7 @@ bool CAimbotHitscan::GetTargets(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon)
 		{
 			C_TFPlayer* Player = pPlayer->As<C_TFPlayer*>();
 
-			if (!Player->IsAlive() || Player->IsDormant())
+			if (!Player->IsAlive() || Player->InCond(TF_COND_HALLOWEEN_GHOST_MODE))
 				continue;
 
 			if (Vars::Aimbot::Global::IgnoreInvlunerable.m_Var && Player->IsInvulnerable())

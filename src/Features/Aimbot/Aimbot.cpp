@@ -13,8 +13,8 @@ bool CAimbot::ShouldRun(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon)
 	if (I::EngineVGui->IsGameUIVisible() || I::MatSystemSurface->IsCursorVisible())
 		return false;
 
-	if (!GetAsyncKeyState(Vars::Aimbot::Global::AimKey.m_Var))
-		return false;
+	//if (!GetAsyncKeyState(Vars::Aimbot::Global::AimKey.m_Var))
+	//	return false;
 
 	if (!pLocal->IsAlive()
 		|| pLocal->IsTaunting()
@@ -71,10 +71,10 @@ void CAimbot::Run(CUserCmd* pCmd)
 		if (!ShouldRun(pLocal, pWeapon))
 			return;
 
-		g_AimbotHitscan.Run(pLocal, pWeapon, pCmd);
+		//g_AimbotHitscan.Run(pLocal, pWeapon, pCmd);
 
-		/*
-		switch (g_GlobalInfo.m_WeaponType)
+		
+		switch (g_Globals.m_WeaponType)
 		{
 		case EWeaponType::HITSCAN: {
 			g_AimbotHitscan.Run(pLocal, pWeapon, pCmd);
@@ -92,6 +92,6 @@ void CAimbot::Run(CUserCmd* pCmd)
 		}
 
 		default: break;
-		}*/
+		}
 	}
 }

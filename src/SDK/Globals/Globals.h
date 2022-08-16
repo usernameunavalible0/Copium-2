@@ -1,5 +1,10 @@
 #pragma once
 
+enum struct EWeaponType
+{
+	UNKNOWN, HITSCAN, PROJECTILE, MELEE
+};
+
 class CGlobals
 {
 public:
@@ -12,6 +17,7 @@ public:
 	int m_nCurrentTargetIdx = 0;
 	bool m_bHitscanRunning = false;
 	bool m_bHitscanSilentActive = false;
+	bool m_bProjectileSilentActive = false;
 
 	float m_flCurAimFOV = 0.0f;
 
@@ -20,6 +26,8 @@ public:
 	bool m_bWeaponCanHeadShot = false;
 	bool m_bIsInGame = false;
 	bool m_bIsGameUIVisible = false;
+
+	EWeaponType m_WeaponType = {};
 };
 
 inline CGlobals g_Globals;

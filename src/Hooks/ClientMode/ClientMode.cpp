@@ -38,6 +38,7 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 			g_Globals.m_nCurItemDefIndex = pWeapon->m_iItemDefinitionIndex();
 			g_Globals.m_bWeaponCanHeadShot = pWeapon->CanHeadShot();
 			g_Globals.m_bWeaponCanAttack = CanShoot(pLocal, pWeapon);
+			g_Globals.m_WeaponType = GetWeaponType(pWeapon);
 			F::Prediction.Start(pLocal, cmd);
 			{
 				//Run aimbot, triggerbot etc. here
