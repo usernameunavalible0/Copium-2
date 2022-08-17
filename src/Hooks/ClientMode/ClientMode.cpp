@@ -27,9 +27,6 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 
 	if (pLocal && pLocal->IsAlive())
 	{
-		QAngle va;
-		if (Vars::Aimbot::Hitscan::AimMethod.m_Var == 2)
-			I::EngineClient->GetViewAngles(va);
 
 		C_TFWeaponBase* pWeapon = pLocal->GetActiveTFWeapon();
 
@@ -49,8 +46,6 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 
 		F::Misc.Run(pLocal, cmd);
 
-		if (Vars::Aimbot::Hitscan::AimMethod.m_Var == 2)
-			I::EngineClient->SetViewAngles(va);
 	}
 
 	return false;
