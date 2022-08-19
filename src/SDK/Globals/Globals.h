@@ -18,6 +18,9 @@ public:
 	bool m_bHitscanRunning = false;
 	bool m_bHitscanSilentActive = false;
 	bool m_bProjectileSilentActive = false;
+	bool m_bAttacking = false;
+	bool m_bSilentTime = false;
+	bool m_bLocalSpectated = false;
 
 	float m_flCurAimFOV = 0.0f;
 

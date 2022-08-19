@@ -624,6 +624,27 @@ void CAimbotProjectile::Run(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon, CUserCm
 
 		bool bIsAttacking = IsAttacking(pCmd, pWeapon);
 
-		Aim(pCmd, pWeapon, Target.m_vAngleTo);
+		if (bIsAttacking)
+			g_Globals.m_bAttacking = true;
+
+		if (Vars::Aimbot::Projectile::AimMethod.m_Var == 1)
+		{
+			if (m_bIsFlameThrower)
+			{
+				g_Globals.m_bProjectileSilentActive = true;
+				Aim(pCmd, pWeapon, Target.m_vAngleTo);
+			}
+
+			else
+			{
+				if (bIsAttacking)	
+				{
+					Aim(pCmd, pWeapon, Target.m_vAngleTo);
+					g_Globals.m_bSilentTime = true;
+				}
+			}
+		}
+
+		else Aim(pCmd, pWeapon, Target.m_vAngleTo);
 	}
 }

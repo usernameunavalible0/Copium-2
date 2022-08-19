@@ -525,9 +525,11 @@ void CAimbotHitscan::Run(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon, CUserCmd* 
 		g_Globals.m_bHitscanRunning = true;
 		g_Globals.m_bHitscanSilentActive = Vars::Aimbot::Hitscan::AimMethod.m_Var == 2;
 
-		//if (Vars::Aimbot::Hitscan::SpectatedSmooth.m_Var && g_GlobalInfo.m_bLocalSpectated)
-			//g_GlobalInfo.m_bHitscanSilentActive = false;
+		if (Vars::Aimbot::Hitscan::SpectatedSmooth.m_Var && g_Globals.m_bLocalSpectated)
+			g_Globals.m_bHitscanSilentActive = false;
 
+		//if (g_Globals.m_bHitscanSilentActive)
+		//	m_vAimPos = Target.m_vPos;
 
 		Aim(pCmd, Target.m_vAngleTo);
 
@@ -537,6 +539,11 @@ void CAimbotHitscan::Run(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon, CUserCmd* 
 				pCmd->buttons |= IN_ATTACK2;
 
 			pCmd->buttons |= IN_ATTACK;
+
+			bool bIsAttacking = IsAttacking(pCmd, pWeapon);
+
+			if (bIsAttacking)
+				g_Globals.m_bAttacking = true;
 		}
 	}
 }

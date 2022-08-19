@@ -13,9 +13,6 @@ bool CAimbot::ShouldRun(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon)
 	if (I::EngineVGui->IsGameUIVisible() || I::MatSystemSurface->IsCursorVisible())
 		return false;
 
-	//if (!GetAsyncKeyState(Vars::Aimbot::Global::AimKey.m_Var))
-	//	return false;
-
 	if (!pLocal->IsAlive()
 		|| pLocal->IsTaunting()
 		|| pLocal->InCond(TF_COND_PHASE)
@@ -57,11 +54,8 @@ void CAimbot::Run(CUserCmd* pCmd)
 {
 	g_Globals.m_nCurrentTargetIdx = 0;
 	g_Globals.m_flCurAimFOV = 0.0f;
-	//g_Globals.m_vPredictedPos = Vec3();
 	g_Globals.m_bHitscanRunning = false;
 	g_Globals.m_bHitscanSilentActive = false;
-	//g_GlobalInfo.m_bProjectileSilentActive = false;
-	//g_GlobalInfo.m_vAimPos = Vec3();
 
 	auto pLocal = g_EntityCache.GetLocal();
 	auto pWeapon = g_EntityCache.GetWeapon();

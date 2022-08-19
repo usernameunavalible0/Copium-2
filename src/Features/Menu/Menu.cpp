@@ -781,6 +781,7 @@ void CMenu::Run()
 						CheckBox(Vars::Misc::Bunnyhop, L"Automatic Bunnyhop?");
 						CheckBox(Vars::Misc::AutoStrafe, L"Automatic Air Strafing");
 						CheckBox(Vars::Misc::BypassPure, L"Bypass sv_pure?");
+						CheckBox(Vars::Misc::NoPush, L"Dont Let Players Push YOU!");
 					}
 					GroupBoxEnd(L"Main", 210);
 

@@ -225,14 +225,14 @@ void CAimbotMelee::Run(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon, CUserCmd* pC
 
 		bool bIsAttacking = IsAttacking(pCmd, pWeapon);
 
-		//if (bIsAttacking)
-		//	g_GlobalInfo.m_bAttacking = true;
+		if (bIsAttacking)
+			g_Globals.m_bAttacking = true;
 
 		if (Vars::Aimbot::Melee::AimMethod.m_Var == 2)
 		{
 			if (bIsAttacking) {
 				Aim(pCmd, Target.m_vAngleTo);
-				//g_GlobalInfo.m_bSilentTime = true;
+				g_Globals.m_bSilentTime = true;
 			}
 		}
 

@@ -151,5 +151,6 @@ namespace Vars
 		inline CVar<bool> Bunnyhop{ true, L"Bunnyhop"};
 		inline CVar<bool> AutoStrafe{ true, L"Auto Strafe" };
 		inline CVar<bool> BypassPure{ true, L"Bypass Pure" };
+		inline CVar<bool> NoPush{ true, L"No Push" };
 	}
 }
