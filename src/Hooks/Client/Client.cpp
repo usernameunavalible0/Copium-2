@@ -65,36 +65,39 @@ void __fastcall BaseClient::FrameStageNotify::Detour(void* ecx, void* edx, Clien
 		g_Globals.m_bIsInGame = I::EngineClient->IsInGame();
 		g_Globals.m_bIsGameUIVisible = I::EngineVGui->IsGameUIVisible();
 
-		if (const auto& pLocal = g_EntityCache.GetLocal())
-		{
-			for (const auto& pTeammate : g_EntityCache.GetGroup(EEntGroup::PLAYERS_TEAMMATES))
-			{
-				C_TFPlayer* Teammate = pTeammate->As<C_TFPlayer*>();
-
-				if (Teammate->IsAlive())
-					continue;
-
-				C_BaseEntity* pObservedPlayer = UTIL_EntityByHandle(Teammate->GetObserverTarget()->GetRefEHandle())->As<C_BaseEntity*>();
-
-				if (pObservedPlayer == pLocal)
-				{
-					switch (Teammate->GetObserverMode())
-					{
-					case OBS_MODE_IN_EYE: break;
-					case OBS_MODE_CHASE: break;
-					default: continue;
-					}
-
-					g_Globals.m_bLocalSpectated = true;
-					break;
-				}
-			}
-		}
-
 		if (g_Globals.m_bIsInGame)
 		{
 			g_Globals.m_nMaxClients = I::EngineClient->GetMaxClients();
 			g_Globals.m_nMaxEntities = I::ClientEntityList->GetMaxEntities();
+
+			if (const auto& pLocal = g_EntityCache.GetLocal())
+			{
+				for (const auto& pTeammate : g_EntityCache.GetGroup(EEntGroup::PLAYERS_TEAMMATES))
+				{
+					C_TFPlayer* Teammate = pTeammate->As<C_TFPlayer*>();
+
+					if (Teammate->IsAlive())
+						continue;
+
+					C_BaseEntity* pObservedPlayer = Teammate->GetObserverTarget();
+
+					if (!pObservedPlayer)
+						continue;
+
+					if (pObservedPlayer == pLocal)
+					{
+						switch (Teammate->GetObserverMode())
+						{
+						case OBS_MODE_IN_EYE: break;
+						case OBS_MODE_CHASE: break;
+						default: continue;
+						}
+
+						g_Globals.m_bLocalSpectated = true;
+						break;
+					}
+				}
+			}
 		}
 	}
 }
