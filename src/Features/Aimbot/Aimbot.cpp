@@ -4,6 +4,7 @@
 #include "AimbotHitscan/AimbotHitscan.h"
 #include "AimbotProjectile/AimbotProjectile.h"
 #include "AimbotMelee/AimbotMelee.h"
+#include "AimbotMedic/AimbotMedic.h"
 
 bool CAimbot::ShouldRun(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon)
 {
@@ -56,6 +57,7 @@ void CAimbot::Run(CUserCmd* pCmd)
 	g_Globals.m_flCurAimFOV = 0.0f;
 	g_Globals.m_bHitscanRunning = false;
 	g_Globals.m_bHitscanSilentActive = false;
+	g_Globals.m_bProjectileSilentActive = false;
 
 	auto pLocal = g_EntityCache.GetLocal();
 	auto pWeapon = g_EntityCache.GetWeapon();
@@ -82,6 +84,11 @@ void CAimbot::Run(CUserCmd* pCmd)
 
 		case EWeaponType::MELEE: {
 			g_AimbotMelee.Run(pLocal, pWeapon, pCmd);
+			break;
+		}
+
+		case EWeaponType::MEDIGUN: {
+			//g_AimbotMedic.Run(pLocal, pWeapon, pCmd);
 			break;
 		}
 

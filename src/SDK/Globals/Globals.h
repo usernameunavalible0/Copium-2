@@ -2,7 +2,7 @@
 
 enum struct EWeaponType
 {
-	UNKNOWN, HITSCAN, PROJECTILE, MELEE
+	UNKNOWN, HITSCAN, PROJECTILE, MELEE, MEDIGUN
 };
 
 class CGlobals

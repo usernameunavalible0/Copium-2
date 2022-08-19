@@ -165,6 +165,7 @@
     <ClCompile Include="Features\Aimbot\Aimbot.cpp" />
     <ClCompile Include="Features\Aimbot\AimbotGlobal\AimbotGlobal.cpp" />
     <ClCompile Include="Features\Aimbot\AimbotHitscan\AimbotHitscan.cpp" />
+    <ClCompile Include="Features\Aimbot\AimbotMedic\AimbotMedic.cpp" />
     <ClCompile Include="Features\Aimbot\AimbotMelee\AimbotMelee.cpp" />
     <ClCompile Include="Features\Aimbot\AimbotProjectile\AimbotProjectile.cpp" />
     <ClCompile Include="Features\ESP\ESP.cpp" />
@@ -303,6 +304,7 @@
     <ClInclude Include="Features\Aimbot\Aimbot.h" />
     <ClInclude Include="Features\Aimbot\AimbotGlobal\AimbotGlobal.h" />
     <ClInclude Include="Features\Aimbot\AimbotHitscan\AimbotHitscan.h" />
+    <ClInclude Include="Features\Aimbot\AimbotMedic\AimbotMedic.h" />
     <ClInclude Include="Features\Aimbot\AimbotMelee\AimbotMelee.h" />
     <ClInclude Include="Features\Aimbot\AimbotProjectile\AimbotProjectile.h" />
     <ClInclude Include="Features\ESP\ESP.h" />

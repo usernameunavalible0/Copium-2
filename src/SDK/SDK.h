@@ -52,6 +52,11 @@ inline EWeaponType GetWeaponType(C_TFWeaponBase* pWeapon)
 		//broken Idk
 		return EWeaponType::UNKNOWN;
 	}
+	
+	case TF_WEAPON_MEDIGUN:
+	{
+		return EWeaponType::MEDIGUN;
+	}
 
 	default:
 	{

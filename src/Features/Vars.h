@@ -68,6 +68,14 @@ namespace Vars
 			inline CVar<bool> PredictSwing{ true, L"Predict Swing" };
 			inline CVar<bool> WhipTeam{ true, L"Whip Teammates" };
 		}
+
+		namespace Medic
+		{
+			inline CVar<bool> Active{ true, L"Active" };
+			inline CVar<int> SortMethod{ 0, L"Sort Method" };	//0 - FOV,		1 - Distance
+			inline CVar<float> AimFOV{ 15.0f, L"Aim FOV" };
+			inline CVar<bool> ScanHitboxes{ true, L"Scan Body" };
+		}
 	}
 
 	namespace Menu
