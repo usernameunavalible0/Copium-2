@@ -20,13 +20,10 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 	g_Globals.m_bSilentTime = false;
 	g_Globals.m_bAttacking = false;
 
-	//FN OriginalFN = Table.Original<FN>(Index);
+	FN OriginalFN = Table.Original<FN>(Index);
 
 	if (!cmd || cmd->command_number <= 0)
-		return Table.Original<FN>(Index)(ecx, edx, flInputSampleTime, cmd);
-
-	if (Table.Original<FN>(Index)(ecx, edx, flInputSampleTime, cmd))
-		I::ClientPrediction->SetLocalViewAngles(cmd->viewangles);
+		return OriginalFN(ecx, edx, flInputSampleTime, cmd);
 
 	uintptr_t _bp; __asm mov _bp, ebp;
 	bool* pbSendPacket = (bool*)(***(uintptr_t***)_bp - 0x1);
@@ -73,22 +70,6 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 
 	}
 
-	auto ShouldNoPush = [&]() -> bool
-	{
-		if (const auto& pLocal = g_EntityCache.GetLocal())
-		{
-			if (!Vars::Misc::NoPush.m_Var)
-				return false;
-
-			if (pLocal->IsTaunting() || pLocal->InCond(TF_COND_HALLOWEEN_KART))
-				return false;
-
-			return true;
-		}
-
-		return false;
-	};
-
 	static bool bWasSet = false;
 
 	if (g_Globals.m_bSilentTime)
@@ -122,7 +103,7 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 			*pbSendPacket = true;
 	}
 
-	return g_Globals.m_bSilentTime || g_Globals.m_bHitscanSilentActive || g_Globals.m_bProjectileSilentActive || ShouldNoPush() ? false : Table.Original<FN>(Index)(ecx, edx, flInputSampleTime, cmd);;
+	return g_Globals.m_bSilentTime || g_Globals.m_bHitscanSilentActive || g_Globals.m_bProjectileSilentActive ? false : OriginalFN;
 }
 
 bool __fastcall ClientMode::ShouldDrawViewModel::Detour(void* ecx, void* edx)
