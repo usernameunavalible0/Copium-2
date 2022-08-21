@@ -20,10 +20,11 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 	g_Globals.m_bSilentTime = false;
 	g_Globals.m_bAttacking = false;
 
-	FN OriginalFN = Table.Original<FN>(Index);
-
 	if (!cmd || cmd->command_number <= 0)
-		return OriginalFN(ecx, edx, flInputSampleTime, cmd);
+		return Table.Original<FN>(Index)(ecx, edx, flInputSampleTime, cmd);
+
+	if (Table.Original<FN>(Index)(ecx, edx, flInputSampleTime, cmd))
+		I::ClientPrediction->SetLocalViewAngles(cmd->viewangles);
 
 	uintptr_t _bp; __asm mov _bp, ebp;
 	bool* pbSendPacket = (bool*)(***(uintptr_t***)_bp - 0x1);
@@ -103,7 +104,7 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 			*pbSendPacket = true;
 	}
 
-	return g_Globals.m_bSilentTime || g_Globals.m_bHitscanSilentActive || g_Globals.m_bProjectileSilentActive ? false : OriginalFN;
+	return g_Globals.m_bSilentTime || g_Globals.m_bHitscanSilentActive || g_Globals.m_bProjectileSilentActive ? false : Table.Original<FN>(Index)(ecx, edx, flInputSampleTime, cmd);
 }
 
 bool __fastcall ClientMode::ShouldDrawViewModel::Detour(void* ecx, void* edx)

@@ -310,7 +310,7 @@ void CAimbotHitscan::Aim(CUserCmd* pCmd, QAngle& vAngle)
 	vAngle -= m_vPunchAngles;
 	ClampAngles(vAngle);
 
-	int nAimMethod = /*(Vars::Aimbot::Hitscan::SpectatedSmooth.m_Var && g_GlobalInfo.m_bLocalSpectated) ? 1 :*/ Vars::Aimbot::Hitscan::AimMethod.m_Var;
+	int nAimMethod = (Vars::Aimbot::Hitscan::SpectatedSmooth.m_Var && g_Globals.m_bLocalSpectated) ? 1 : Vars::Aimbot::Hitscan::AimMethod.m_Var;
 
 	switch (nAimMethod)
 	{
