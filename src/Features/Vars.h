@@ -160,5 +160,7 @@ namespace Vars
 		inline CVar<bool> AutoStrafe{ true, L"Auto Strafe" };
 		inline CVar<bool> BypassPure{ true, L"Bypass Pure" };
 		inline CVar<bool> NoPush{ true, L"No Push" };
+		inline CVar<bool> TauntSlide{ false, L"Taunt Slide" };
+		inline CVar<bool> TauntControl{ false, L"Taunt Control" };
 	}
 }

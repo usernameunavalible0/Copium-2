@@ -782,6 +782,8 @@ void CMenu::Run()
 						CheckBox(Vars::Misc::AutoStrafe, L"Automatic Air Strafing");
 						CheckBox(Vars::Misc::BypassPure, L"Bypass sv_pure?");
 						CheckBox(Vars::Misc::NoPush, L"Dont Let Players Push YOU!");
+						CheckBox(Vars::Misc::TauntSlide, L"Be able to slide while taunting");
+						CheckBox(Vars::Misc::TauntControl, L"Fully control Taunt movement");
 					}
 					GroupBoxEnd(L"Main", 210);
 

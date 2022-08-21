@@ -71,6 +71,21 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 
 	}
 
+	if (Vars::Misc::TauntSlide.m_Var)
+	{
+		if (const auto& pLocal = g_EntityCache.GetLocal())
+		{
+			if (pLocal->IsTaunting())
+			{
+				if (Vars::Misc::TauntControl.m_Var)
+					cmd->viewangles.x = (cmd->buttons & IN_BACK) ? 91.0f : (cmd->buttons & IN_FORWARD) ? 0.0f : 90.0f;
+
+				return false;
+			}
+		}
+	}
+
+
 	static bool bWasSet = false;
 
 	if (g_Globals.m_bSilentTime)
