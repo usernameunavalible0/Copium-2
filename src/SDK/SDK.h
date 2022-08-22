@@ -255,6 +255,7 @@ inline int RandIntSimple(int min, int max)
 class CUtil
 {
 public:
+
 	void FixMovement(const QAngle& va, CUserCmd* cmd);
 
 	bool IsVisible(const Vector& vStart, const Vector& vEnd);

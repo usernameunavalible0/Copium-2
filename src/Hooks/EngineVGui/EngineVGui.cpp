@@ -2,6 +2,7 @@
 
 #include "../../Features/ESP/ESP.h"
 #include "../../Features/Menu/Menu.h"
+#include "../../Features/Visual/Visuals.h"
 
 using namespace Hooks;
 
@@ -27,6 +28,15 @@ void __fastcall EngineVGui::Paint::Detour(void* ecx, void* edx, int mode)
 				if (pLocal)
 				{
 					F::ESP.Render(pLocal);
+				}
+
+				if (Vars::ESP::Players::Bones.m_Var)
+				{
+					F::Visual.Skeleton({ 8, 7, 6, 4 }, COLOR_WHITE);
+					F::Visual.Skeleton({ 11, 10, 9, 4 }, COLOR_WHITE);
+					F::Visual.Skeleton({ 0, 4, 1 }, COLOR_WHITE);
+					F::Visual.Skeleton({ 14, 13, 1 }, COLOR_WHITE);
+					F::Visual.Skeleton({ 17, 16, 1 }, COLOR_WHITE);
 				}
 
 				//Current Active Aimbot FOV

@@ -129,6 +129,7 @@ namespace Vars
 			inline CVar<bool> Name{ true, L"Name" };
 			inline CVar<bool> Box{ false, L"2D Box" };
 			inline CVar<bool> HealthBar{ true, L"Health Bar" };
+			inline CVar<bool> Bones{ true, L"Bone Matrix" };
 		}
 
 		namespace Buildings

@@ -730,6 +730,7 @@ void CMenu::Run()
 								CheckBox(Vars::ESP::Players::Name, L"Text to show Player Name");
 								CheckBox(Vars::ESP::Players::Box, L"2D Box around the player?");
 								CheckBox(Vars::ESP::Players::HealthBar, L"Bar to the side of the player to show health");
+								CheckBox(Vars::ESP::Players::Bones, L"Lines to show bone matrix");
 							}
 							GroupBoxEnd(L"Players", 210);
 
