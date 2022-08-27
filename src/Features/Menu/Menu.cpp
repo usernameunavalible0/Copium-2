@@ -752,7 +752,6 @@ void CMenu::Run()
 
 						case EVisualTabs::TAB_MISC:
 						{
-							Rect_t checkpoint = m_LastWidget;
 
 							GroupBoxStart();
 							{
@@ -777,6 +776,8 @@ void CMenu::Run()
 
 				case EMainTabs::TAB_MISC:
 				{
+					Rect_t checkpoint = m_LastWidget;
+
 					GroupBoxStart();
 					{
 						CheckBox(Vars::Misc::Bunnyhop, L"Automatic Bunnyhop?");
@@ -787,6 +788,21 @@ void CMenu::Run()
 						CheckBox(Vars::Misc::TauntControl, L"Fully control Taunt movement");
 					}
 					GroupBoxEnd(L"Main", 210);
+
+					checkpoint.x += 210 + Vars::Menu::SpacingX;
+					m_LastWidget = checkpoint;
+
+					GroupBoxStart();
+					{
+						CheckBox(Vars::CL_Move::Enabled, L"Enable tick exploits");
+						CheckBox(Vars::CL_Move::Doubletap, L"Tick exploit while aimbotting");
+						CheckBox(Vars::CL_Move::NotInAir, L"Dont doubletap while airborne");
+						InputKey(Vars::CL_Move::TeleportKey, false);
+						InputKey(Vars::CL_Move::RechargeKey, false);
+						InputKey(Vars::CL_Move::DoubletapKey);
+						CheckBox(Vars::CL_Move::WaitForDT, L"Wait to Doubletap");
+					}
+					GroupBoxEnd(L"Tickbase", 210);
 
 					break;
 				}

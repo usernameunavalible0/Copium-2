@@ -223,6 +223,11 @@ void CAimbotMelee::Run(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon, CUserCmd* pC
 		if (ShouldSwing(pLocal, pWeapon, pCmd, Target))
 			pCmd->buttons |= IN_ATTACK;
 
+		if (Vars::CL_Move::Enabled.m_Var && Vars::CL_Move::Doubletap.m_Var && (pCmd->buttons & IN_ATTACK) && !g_Globals.m_nShifted && !g_Globals.m_nWaitForShift)
+		{
+			g_Globals.m_bShouldShift = true;
+		}
+
 		bool bIsAttacking = IsAttacking(pCmd, pWeapon);
 
 		if (bIsAttacking)

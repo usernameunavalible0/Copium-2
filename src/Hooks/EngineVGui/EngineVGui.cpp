@@ -4,9 +4,14 @@
 #include "../../Features/Menu/Menu.h"
 #include "../../Features/Visual/Visuals.h"
 
+int ticksChoked = 0;
+
+
 using namespace Hooks;
 
 #define DBG(...) G::Draw.String(EFonts::DEBUG, 5, nY, COLOR_GREY, TXT_DEFAULT, __VA_ARGS__); nY += G::Draw.GetFontHeight(EFonts::DEBUG)
+
+const int nY = (g_Globals.m_nScreenHeight / 2) + 20;
 
 void __fastcall EngineVGui::Paint::Detour(void* ecx, void* edx, int mode)
 {
@@ -53,6 +58,61 @@ void __fastcall EngineVGui::Paint::Detour(void* ecx, void* edx, int mode)
 					}
 				}
 
+				if (pLocal && pLocal->IsAlive())
+				{
+					int ticks;
+
+					if (pLocal->m_iClass() == TF_CLASS_HEAVYWEAPONS) {
+
+						for (int i = MAX_NEW_COMMANDS_HEAVY; i >= 0; i--) {
+							//printf("i: %d\n", i);
+							for (int j = MAX_NEW_COMMANDS_HEAVY - g_Globals.m_nShifted; j <= MAX_NEW_COMMANDS_HEAVY; j++) {
+								//printf("j: %d\n", j);
+								ticksChoked = j;
+								break;
+							}
+						}
+						ticks = MAX_NEW_COMMANDS_HEAVY;
+					}
+					else {
+						for (int i = MAX_NEW_COMMANDS; i >= 0; i--) {
+							//printf("i: %d\n", i);
+							for (int j = MAX_NEW_COMMANDS - g_Globals.m_nShifted; j <= MAX_NEW_COMMANDS; j++) {
+								//printf("j: %d\n", j);
+								ticksChoked = j;
+								break;
+							}
+						}
+						ticks = MAX_NEW_COMMANDS;
+					}
+
+					//g_AimbotProjectile.DrawTrace(Trace);
+
+					Color color1 = g_Globals.m_nWaitForShift ? Color{ 255, 192, 81, 180 } : Color{ 106, 255, 131, 180 };
+					Color color2 = g_Globals.m_nWaitForShift ? Color{ 255, 134, 81, 180 } : Color{ 106, 255, 250, 180 };
+					//g_Draw.String(FONT_MENU, g_ScreenSize.c, nY - 100, { 255, 64, 64, 255 }, ALIGN_CENTERHORIZONTAL, _(L"Ticks Choked: %i "), ticksChoked);
+					//g_Draw.String(FONT_MENU, g_ScreenSize.c, nY - 100, { 255, 64, 64, 255 }, ALIGN_CENTERHORIZONTAL, Vars::Skybox::SkyboxName.c_str());
+					int tickWidth = 8;
+					int barWidth = (tickWidth * ticks) + 2;
+					G::Draw.OutlinedRect( // Outline of bar
+						 (barWidth / 2), // get center of screen, then subtract the width of the bar divided by 2 (to start  the bar)
+						nY + 80, // vertical center + 80px
+						barWidth, // width of outlined rect
+						12, // height (hardcoded)
+						{ 30, 30, 30, 180 } // color
+					);
+					G::Draw.GradientRect(
+						(barWidth / 2) + 1, // the bar
+						nY + 81,
+						((barWidth / 2) + 1) + tickWidth * ticksChoked,
+						nY + 81 + 10,
+						color1,
+						color2,
+						true
+					);
+
+				}
+
 			}
 
 			if (!F::Menu.m_bOpen)
@@ -61,6 +121,8 @@ void __fastcall EngineVGui::Paint::Detour(void* ecx, void* edx, int mode)
 			}
 
 			F::Menu.Run();
+
+
 
 		}
 		pfFinishDrawing(I::MatSystemSurface);

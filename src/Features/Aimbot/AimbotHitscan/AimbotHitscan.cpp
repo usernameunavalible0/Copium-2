@@ -521,6 +521,14 @@ void CAimbotHitscan::Run(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon, CUserCmd* 
 				return;
 		}
 
+		if (Vars::CL_Move::WaitForDT.m_Var)
+		{
+			if (g_Globals.m_nWaitForShift && !g_Globals.m_nShifted && GetAsyncKeyState(Vars::CL_Move::DoubletapKey.m_Var))
+			{
+				return;
+			}
+		}
+
 		g_Globals.m_nCurrentTargetIdx = Target.m_pEntity->entindex();
 		g_Globals.m_bHitscanRunning = true;
 		g_Globals.m_bHitscanSilentActive = Vars::Aimbot::Hitscan::AimMethod.m_Var == 2;
@@ -539,6 +547,14 @@ void CAimbotHitscan::Run(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon, CUserCmd* 
 				pCmd->buttons |= IN_ATTACK2;
 
 			pCmd->buttons |= IN_ATTACK;
+
+			if (Vars::CL_Move::Enabled.m_Var && Vars::CL_Move::Doubletap.m_Var && (pCmd->buttons & IN_ATTACK) && !g_Globals.m_nShifted && !g_Globals.m_nWaitForShift)
+			{/*
+				if (pLocal->m_iClass() == TF_CLASS_HEAVYWEAPONS && pWeapon->GetSlot() == 0 && !pLocal->m_vecVelocity().IsZero())
+					g_Globals.m_bShouldShift = false;
+				else*/
+					g_Globals.m_bShouldShift = true;
+			}
 
 			bool bIsAttacking = IsAttacking(pCmd, pWeapon);
 

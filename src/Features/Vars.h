@@ -78,6 +78,18 @@ namespace Vars
 		}
 	}
 
+	namespace CL_Move
+	{
+		inline CVar<bool> Enabled{ true, L"Enabled" };
+		inline CVar<bool> Doubletap{ true, L"Doubletap" };
+		inline CVar<bool> NotInAir{ true, L"Dont DT in air" };
+		inline CVar<int> TeleportKey{ 0x48, L"Teleport Key" }; //R
+		inline CVar<int> RechargeKey{ 0x52, L"Recharge Key" }; //H
+		inline CVar<int> DoubletapKey{ VK_SHIFT, L"Doubletap Key" }; //V
+
+		inline CVar<bool> WaitForDT{ true, L"Wait for DT" };
+	}
+
 	namespace Menu
 	{
 		inline Rect_t Position = { 100, 100, 800, 420 };
@@ -113,6 +125,15 @@ namespace Vars
 			inline Color Widget = { 20, 20, 20, 255 };
 			inline Color WidgetActive = { 70, 70, 70, 255 };
 			inline Color OutlineMenu = { 255, 255, 255, 20 };
+		}
+	}
+
+	namespace Auto
+	{
+		namespace Airblast
+		{
+			inline CVar<bool> Active{ true, L"Active" };
+			inline CVar<bool> DisableOnAttack{ false, L"Disable on Attack" };
 		}
 	}
 

@@ -6,10 +6,10 @@ void CVisuals::Skeleton(const std::vector<int>& vecBones, Color clr)
 {
 	if (auto pLocal = g_EntityCache.GetLocal())
 	{
-		if (pLocal->deadflag())
-			return;
+		//if (pLocal->deadflag())
+			//return;
 
-		for (auto pEntity : g_EntityCache.GetGroup(EEntGroup::PLAYERS_ALL))
+		for (auto pEntity : g_EntityCache.GetGroup(EEntGroup::PLAYERS_ENEMIES))
 		{
 			auto pPlayer = pEntity->As<C_TFPlayer*>();
 

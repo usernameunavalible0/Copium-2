@@ -23,8 +23,11 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 	if (!cmd || cmd->command_number <= 0)
 		return Table.Original<FN>(Index)(ecx, edx, flInputSampleTime, cmd);
 
-	if (Table.Original<FN>(Index)(ecx, edx, flInputSampleTime, cmd))
-		I::ClientPrediction->SetLocalViewAngles(cmd->viewangles);
+	if (!Vars::Misc::TauntSlide.m_Var)
+	{
+		if (Table.Original<FN>(Index)(ecx, edx, flInputSampleTime, cmd))
+			I::ClientPrediction->SetLocalViewAngles(cmd->viewangles);
+	}
 
 	uintptr_t _bp; __asm mov _bp, ebp;
 	bool* pbSendPacket = (bool*)(***(uintptr_t***)_bp - 0x1);
@@ -45,6 +48,7 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 			g_Globals.m_nCurItemDefIndex = pWeapon->m_iItemDefinitionIndex();
 			g_Globals.m_bWeaponCanHeadShot = pWeapon->CanHeadShot();
 			g_Globals.m_bWeaponCanAttack = CanShoot(pLocal, pWeapon);
+			g_Globals.m_bWeaponCanSecondaryAttack = pWeapon->CanPerformSecondaryAttack();
 			g_Globals.m_WeaponType = GetWeaponType(pWeapon);
 
 			if (pWeapon->GetSlot() != 2)
@@ -71,14 +75,17 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 
 	}
 
-	if (Vars::Misc::TauntSlide.m_Var)
+	if (Vars::Misc::TauntControl.m_Var)
 	{
-		if (const auto& pLocal = g_EntityCache.GetLocal())
+		if (auto pLocal = g_EntityCache.GetLocal())
 		{
 			if (pLocal->IsTaunting())
 			{
-				if (Vars::Misc::TauntControl.m_Var)
-					cmd->viewangles.x = (cmd->buttons & IN_BACK) ? 91.0f : (cmd->buttons & IN_FORWARD) ? 0.0f : 90.0f;
+					cmd->viewangles.x = (cmd->buttons & IN_BACK)
+					? 91.0f
+					: (cmd->buttons & IN_FORWARD)
+					? 0.0f
+					: 90.0f;
 
 				return false;
 			}

@@ -51,6 +51,24 @@ void CEntityCache::Fill()
 
 				break;
 			}
+			
+			case ETFClientClass::CTFProjectile_Rocket:
+			case ETFClientClass::CTFGrenadePipebombProjectile:
+			case ETFClientClass::CTFProjectile_Jar:
+			case ETFClientClass::CTFProjectile_JarGas:
+			case ETFClientClass::CTFProjectile_JarMilk:
+			case ETFClientClass::CTFProjectile_Arrow:
+			case ETFClientClass::CTFProjectile_SentryRocket:
+			case ETFClientClass::CTFProjectile_Flare:
+			case ETFClientClass::CTFProjectile_Cleaver:
+			case ETFClientClass::CTFProjectile_EnergyBall:
+			case ETFClientClass::CTFProjectile_HealingBolt:
+			case ETFClientClass::CTFProjectile_ThrowableBreadMonster:
+			{
+				m_Groups[EEntGroup::WORLD_PROJECTILES].push_back(pEntity);
+				
+				break;
+			}
 
 			default: break;
 			}

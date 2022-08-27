@@ -609,6 +609,11 @@ void CAimbotProjectile::Run(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon, CUserCm
 		{
 			pCmd->buttons |= IN_ATTACK;
 
+			if (Vars::CL_Move::Enabled.m_Var && Vars::CL_Move::Doubletap.m_Var && (pCmd->buttons & IN_ATTACK) && !g_Globals.m_nShifted && !g_Globals.m_nWaitForShift)
+			{
+				g_Globals.m_bShouldShift = true;
+			}
+
 			if (g_Globals.m_nCurItemDefIndex == Soldier_m_TheBeggarsBazooka)
 			{
 				if (pWeapon->Clip1() > 0)

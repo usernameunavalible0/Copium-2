@@ -5,6 +5,10 @@ enum struct EWeaponType
 	UNKNOWN, HITSCAN, PROJECTILE, MELEE, MEDIGUN
 };
 
+#define MAX_NEW_COMMANDS			20
+#define MAX_NEW_COMMANDS_HEAVY		24
+#define DT_WAIT_CALLS 24
+
 class CGlobals
 {
 public:
@@ -22,8 +26,16 @@ public:
 	bool m_bSilentTime = false;
 	bool m_bLocalSpectated = false;
 
+	// CL_MOVE
+	int m_nShifted = MAX_NEW_COMMANDS;
+	bool m_bRecharging = false;
+	int m_nWaitForShift = 0;
+	bool m_bShouldShift = false;
+	bool fast_stop = false;
+
 	float m_flCurAimFOV = 0.0f;
 
+	bool m_bWeaponCanSecondaryAttack = false;
 	bool m_bAutoBackstabRunning = false;
 	bool m_bWeaponCanAttack = false;
 	bool m_bWeaponCanHeadShot = false;

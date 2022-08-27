@@ -38,7 +38,22 @@ void CFeatures_Misc::AutoStrafe(CUserCmd* pCmd)
 		if (const auto& pLocal = g_EntityCache.GetLocal())
 		{
 			if (pLocal->IsAlive() && !pLocal->IsSwimming() && !pLocal->m_fFlags().IsFlagSet(FL_ONGROUND) && (pCmd->mousedx > 1 || pCmd->mousedx < -1))
+			{
+				float speed = pLocal->m_vecVelocity().Length2D();
+
+				if (g_Globals.fast_stop && GetAsyncKeyState(Vars::CL_Move::DoubletapKey.m_Var)) {
+					if (speed > pLocal->GetPlayerMaxSpeed() * 0.1) {
+						pCmd->forwardmove = 0;
+						pCmd->sidemove = 0.0;
+					}
+					else {
+						g_Globals.fast_stop = false;
+					}
+
+				}
+
 				pCmd->sidemove = pCmd->mousedx > 1 ? 450.f : -450.f;
+			}
 		}
 	}
 }
