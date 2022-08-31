@@ -39,9 +39,43 @@ void CVisuals::Skeleton(const std::vector<int>& vecBones, Color clr)
 	}
 }
 
-void CVisuals::Hitboxes()
+void CVisuals::Lines()
 {
-	
+	if (auto pLocal = g_EntityCache.GetLocal())
+	{
+		for (auto pEntity : g_EntityCache.GetGroup(EEntGroup::PLAYERS_ENEMIES))
+		{
+			auto pPlayer = pEntity->As<C_TFPlayer*>();
+
+			if (pPlayer->deadflag())
+				continue;
+
+			Vector2D vBody = {};
+
+			Vector pelvis;
+			pPlayer->GetHitboxPosition(HITBOX_PELVIS, pelvis);
+			if (!GetVectorInScreenSpace(pelvis, vBody))
+				continue;
+
+			bool bIsLocal = pPlayer == pLocal;
+			
+			Color DrawColor = G::Util.GetTeamColor(pPlayer->m_iTeamNum());
+
+			if (!bIsLocal)
+			{
+				Vector2D vOrigin = {};
+
+				if (GetVectorInScreenSpace(pPlayer->GetAbsOrigin(), vOrigin))
+				{
+					G::Draw.Line(
+						g_Globals.m_nScreenWidht / 2, g_Globals.m_nScreenHeight,
+						static_cast<int>(vOrigin.x), static_cast<int>(vOrigin.y),
+						DrawColor
+					);
+				}
+			}
+		}
+	}
 }
 
 void CVisuals::FOV(CViewSetup* pView)
@@ -99,5 +133,6 @@ void CVisuals::ThirdPerson()
 
 		if (!bIsInThirdPerson)
 			pLocal->m_nForceTauntCam() = 1;
+
 	}
 }

@@ -1,69 +1,80 @@
 #include "AimbotMedic.h"
-#include "../../Vars.h"
 
-ESortMethod CAimbotMedic::GetSortMethod()
+void CAimbotMedic::Run(C_TFPlayer* pLocal, CUserCmd* cmd)
 {
-	switch (Vars::Aimbot::Medic::SortMethod.m_Var) {
-	case 0: return ESortMethod::FOV;
-	case 1: return ESortMethod::DISTANCE;
-	default: return ESortMethod::UNKNOWN;
-	}
+	C_TFPlayer* pEntity = GetBestTarget(pLocal)->As<C_TFPlayer*>();
+
+	if (!pEntity)
+		return;
+
+	int iBestHitbox = GetBestHitbox(pLocal, pEntity);
+
+	if (iBestHitbox == -1)
+		return;
+
+	Vector vEntity;
+	pEntity->GetHitboxPosition(iBestHitbox, vEntity);
+
+	Vector vLocal = pLocal->Weapon_ShootPosition();
+
+	QAngle angs;
+	VectorAngles((vEntity - vLocal), angs);
+
+	ClampAngles(angs);
+	cmd->viewangles = angs;
+
+	I::EngineClient->SetViewAngles(cmd->viewangles);
+
+	cmd->buttons |= IN_ATTACK;
 }
 
-bool CAimbotMedic::GetTargets(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon)
+IClientEntity* CAimbotMedic::GetBestTarget(C_TFPlayer* pLocal)
 {
-	ESortMethod SortMethod = GetSortMethod();
+	//this num could be smaller 
+	float flDistToBest = 99999.f;
 
-	if (SortMethod == ESortMethod::FOV)
-		g_Globals.m_flCurAimFOV = Vars::Aimbot::Medic::AimFOV.m_Var;
+	Vector vLocal = pLocal->Weapon_ShootPosition();
 
-	g_AimbotGlobal.m_vecTargets.clear();
-
-	Vector vLocalPos = pLocal->Weapon_ShootPosition();
-	QAngle vLocalAngles; I::EngineClient->GetViewAngles(vLocalAngles);
-
-	if (Vars::Aimbot::Global::AimPlayers.m_Var)
+	for (auto Entity : g_EntityCache.GetGroup(EEntGroup::PLAYERS_TEAMMATES))
 	{
-		//const bool bWhipTeam = (pWeapon->m_iItemDefinitionIndex() == Soldier_t_TheDisciplinaryAction && Vars::Aimbot::Melee::WhipTeam.m_Var);
+		auto pEntity = Entity->As<C_TFPlayer*>();
 
-		for (const auto& pPlayer : g_EntityCache.GetGroup(EEntGroup::PLAYERS_ENEMIES))
+		int iBestHitbox = GetBestHitbox(pLocal, pEntity);
+
+		if (iBestHitbox == -1)
+			continue;
+
+		Vector vEntity;
+		pEntity->GetHitboxPosition(iBestHitbox, vEntity);
+
+		if (pEntity->IsInvulnerable())
+			continue;
+
+		float flDistToTarget = (vLocal - vEntity).Length();
+
+		if (flDistToTarget < flDistToBest)
 		{
-			C_TFPlayer* Player = pPlayer->As<C_TFPlayer*>();
-			if (!Player->IsAlive() || Player->InCond(TF_COND_HALLOWEEN_GHOST_MODE))
-				continue;
-
-			if (Vars::Aimbot::Global::IgnoreInvlunerable.m_Var && Player->IsInvulnerable())
-				continue;
-
-			if (Vars::Aimbot::Global::IgnoreCloaked.m_Var && Player->IsCloaked())
-				continue;
-
-			if (Vars::Aimbot::Global::IgnoreTaunting.m_Var && Player->IsTaunting())
-				continue;
-
-			//if (Vars::Aimbot::Global::IgnoreFriends.m_Var && g_EntityCache.Friends[Player->GetIndex()])
-			//	continue;
-
-			Vector vPos; Player->GetHitboxPosition(HITBOX_BODY, vPos);
-			QAngle vAngleTo = CalcAngle(vLocalPos, vPos);
-			float flFOVTo = SortMethod == ESortMethod::FOV ? CalcFov(vLocalAngles, vAngleTo) : 0.0f;
-			float flDistTo = SortMethod == ESortMethod::DISTANCE ? vLocalPos.DistTo(vPos) : 0.0f;
-
-			if (SortMethod == ESortMethod::FOV && flFOVTo > Vars::Aimbot::Medic::AimFOV.m_Var)
-				continue;
-
-			g_AimbotGlobal.m_vecTargets.push_back({ Player, ETargetType::PLAYER, vPos, vAngleTo, flFOVTo, flDistTo });
+			flDistToBest = flDistToTarget;
+			return Entity;
 		}
 	}
 
-	return !g_AimbotGlobal.m_vecTargets.empty();
 }
 
-bool CAimbotMedic::VerifyTarget(C_TFPlayer* pLocal, C_TFWeaponBase* pWeapon, Target_t& Target)
+int CAimbotMedic::GetBestHitbox(C_TFPlayer* pLocal, C_TFPlayer* pEntity)
 {
-	//if (Vars::Aimbot::Melee::RangeCheck.m_Var ? !CanMeleeHit(pLocal, pWeapon, Target.m_vAngleTo, Target.m_pEntity->entindex()) :
-		if (!VisPos(pLocal, Target.m_pEntity, pLocal->Weapon_ShootPosition(), Target.m_vPos))
-		return false;
+	int iBestHitbox = -1;
 
-	return true;
+	iBestHitbox = HITBOX_BODY;
+
+	Vector vEntity;
+	pEntity->GetHitboxPosition(iBestHitbox, vEntity);
+
+	if (vEntity.IsZero())
+		return -1;
+
+	if (!G::Util.IsVisible(pLocal->Weapon_ShootPosition(), vEntity))
+		return -1;
+
+	return iBestHitbox;
 }

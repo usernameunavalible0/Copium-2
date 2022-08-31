@@ -44,6 +44,8 @@ void __fastcall EngineVGui::Paint::Detour(void* ecx, void* edx, int mode)
 					F::Visual.Skeleton({ 17, 16, 1 }, COLOR_WHITE);
 				}
 
+				F::Visual.Lines();
+
 				//Current Active Aimbot FOV
 				if (/*Vars::Visual::AimFOVAlpha.m_Var &&*/ g_Globals.m_flCurAimFOV)
 				{

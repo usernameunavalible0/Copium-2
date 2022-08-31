@@ -10,7 +10,7 @@ public:
 	bool RemoveScope(int nPanel);
 	void FOV(CViewSetup* pView);
 	void ThirdPerson();
-	void Hitboxes();
+	void Lines();
 	void Skeleton(const std::vector<int>& vecBonex, Color clr);
 };
 

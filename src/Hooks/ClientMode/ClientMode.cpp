@@ -6,6 +6,7 @@
 #include "../../Features/Visual/Visuals.h"
 #include "../../Features/Aimbot/Aimbot.h"
 #include "../CL_Main/CL_Main.h"
+#include "../../Features/Auto/Auto.h"
 
 using namespace Hooks;
 
@@ -63,12 +64,17 @@ bool __fastcall ClientMode::CreateMove::Detour(void* ecx, void* edx, float flInp
 				}
 			}
 
+			F::Backstab.Run(pLocal, pWeapon, cmd);
+
+			F::Aimbot.Run(cmd);
+
 			F::Prediction.Start(pLocal, cmd);
 			{
 				//Run aimbot, triggerbot etc. here
-				F::Aimbot.Run(cmd);
+				//F::Misc.NeedleGunNoSpread(pWeapon, cmd);
 			}
 			F::Prediction.Finish(pLocal);
+
 		}
 
 		F::Misc.Run(pLocal, cmd);

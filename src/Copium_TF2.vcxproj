@@ -168,6 +168,7 @@
     <ClCompile Include="Features\Aimbot\AimbotMedic\AimbotMedic.cpp" />
     <ClCompile Include="Features\Aimbot\AimbotMelee\AimbotMelee.cpp" />
     <ClCompile Include="Features\Aimbot\AimbotProjectile\AimbotProjectile.cpp" />
+    <ClCompile Include="Features\Auto\Backstab\Backstab.cpp" />
     <ClCompile Include="Features\ESP\ESP.cpp" />
     <ClCompile Include="Features\Menu\InputHelper\InputHelper.cpp" />
     <ClCompile Include="Features\Menu\Menu.cpp" />
@@ -307,6 +308,8 @@
     <ClInclude Include="Features\Aimbot\AimbotMedic\AimbotMedic.h" />
     <ClInclude Include="Features\Aimbot\AimbotMelee\AimbotMelee.h" />
     <ClInclude Include="Features\Aimbot\AimbotProjectile\AimbotProjectile.h" />
+    <ClInclude Include="Features\Auto\Auto.h" />
+    <ClInclude Include="Features\Auto\Backstab\Backstab.h" />
     <ClInclude Include="Features\ESP\ESP.h" />
     <ClInclude Include="Features\Menu\InputHelper\InputHelper.h" />
     <ClInclude Include="Features\Menu\Menu.h" />

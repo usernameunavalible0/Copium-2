@@ -139,6 +139,7 @@
     <ClCompile Include="Features\Aimbot\Aimbot.cpp" />
     <ClCompile Include="Features\Aimbot\AimbotProjectile\AimbotProjectile.cpp" />
     <ClCompile Include="Features\Aimbot\AimbotMedic\AimbotMedic.cpp" />
+    <ClCompile Include="Features\Auto\Backstab\Backstab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entry\Entry.h" />
@@ -540,6 +541,8 @@
     <ClInclude Include="Features\Aimbot\Aimbot.h" />
     <ClInclude Include="Features\Aimbot\AimbotProjectile\AimbotProjectile.h" />
     <ClInclude Include="Features\Aimbot\AimbotMedic\AimbotMedic.h" />
+    <ClInclude Include="Features\Auto\Auto.h" />
+    <ClInclude Include="Features\Auto\Backstab\Backstab.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SDK\hl2_src\game\server\base.txt" />

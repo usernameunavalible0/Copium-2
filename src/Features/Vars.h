@@ -119,8 +119,10 @@ namespace Vars
 
 		namespace Colors
 		{
-			inline Color WindowBackground = { 30, 30, 30, 255 };
-			inline Color TitleBar = { 50, 50, 50, 255 };
+			//inline Color WindowBackground = { 30, 30, 30, 255 };
+			inline Color WindowBackground = { 4, 59, 92, 255 };
+			//inline Color TitleBar = { 50, 50, 50, 255 };
+			inline Color TitleBar = { 40, 67, 135, 255 };
 			inline Color Text = { 255, 255, 255, 190 };
 			inline Color Widget = { 20, 20, 20, 255 };
 			inline Color WidgetActive = { 70, 70, 70, 255 };
@@ -134,6 +136,11 @@ namespace Vars
 		{
 			inline CVar<bool> Active{ true, L"Active" };
 			inline CVar<bool> DisableOnAttack{ false, L"Disable on Attack" };
+		}
+
+		namespace Backstab
+		{
+			inline CVar<bool> Active{ true, L"Active" };
 		}
 	}
 

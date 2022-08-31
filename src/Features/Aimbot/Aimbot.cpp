@@ -69,7 +69,6 @@ void CAimbot::Run(CUserCmd* pCmd)
 
 		//g_AimbotHitscan.Run(pLocal, pWeapon, pCmd);
 
-		
 		switch (g_Globals.m_WeaponType)
 		{
 		case EWeaponType::HITSCAN: {
@@ -84,11 +83,6 @@ void CAimbot::Run(CUserCmd* pCmd)
 
 		case EWeaponType::MELEE: {
 			g_AimbotMelee.Run(pLocal, pWeapon, pCmd);
-			break;
-		}
-
-		case EWeaponType::MEDIGUN: {
-			//g_AimbotMedic.Run(pLocal, pWeapon, pCmd);
 			break;
 		}
 

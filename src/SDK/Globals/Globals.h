@@ -5,9 +5,9 @@ enum struct EWeaponType
 	UNKNOWN, HITSCAN, PROJECTILE, MELEE, MEDIGUN
 };
 
-#define MAX_NEW_COMMANDS			20
-#define MAX_NEW_COMMANDS_HEAVY		24
-#define DT_WAIT_CALLS 24
+#define MAX_NEW_COMMANDS 22
+#define MAX_NEW_COMMANDS_HEAVY 26
+#define DT_WAIT_CALLS 26
 
 class CGlobals
 {
